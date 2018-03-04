@@ -14,6 +14,8 @@ I’m not looking for pull requests yet. Some time in the future, yes, absolutel
 
 Note: if the Ruby seems weird anywhere, please let me know. I’m a Swift and Objective-C developer trying to get good at Ruby, but realizing I have a long way to go. :)
 
+This code is licensed via The Unlicense. If you fork it, all I ask is that you choose a name other than Wildcat, so there’s no confusion.
+
 ## The gist
 
 Blog posts and pages are stored as files on disk. No databases.
