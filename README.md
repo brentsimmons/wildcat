@@ -14,7 +14,7 @@ I’m not looking for pull requests yet. Some time in the future, yes, absolutel
 
 Note: if the Ruby seems weird anywhere, please let me know. I’m a Swift and Objective-C developer trying to get good at Ruby, but realizing I have a long way to go. :)
 
-## The gist of it
+## The gist
 
 Blog posts and pages are stored as files on disk. No databases.
 
