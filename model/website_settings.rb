@@ -3,9 +3,11 @@ require_relative('../utilities/wildcat_file')
 class WebsiteSettings
 
   attr_reader :attributes # everything
+  attr_reader :project_folder
   attr_reader :site_name
   attr_reader :site_url
   attr_reader :output_file_suffix
+  attr_reader :output_folder
   attr_reader :rsync_path
   attr_reader :favicon_url
   attr_reader :icon_url
@@ -27,6 +29,7 @@ class WebsiteSettings
   SITE_NAME_KEY = 'site_name'
   SITE_URL_KEY = 'site_url'
   OUTPUT_FILE_SUFFIX_KEY = 'output_file_suffix'
+  OUTPUT_FOLDER_KEY = 'output_folder'
   RSYNC_PATH_KEY = 'rsync_path'
   FAVICON_URL_KEY = 'favicon'
   ICON_URL_KEY = 'icon'
@@ -43,13 +46,15 @@ class WebsiteSettings
   FEED_AUTHOR_URL_KEY = 'feed_author_url'
   FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar'
 
-  def initialize(settings_file_path)
+  def initialize(project_folder, settings_file_path)
+    @project_folder = project_folder
     wildcat_file = WildcatFile.new(settings_file_path)
     @attributes = wildcat_file.attributes
 
     @site_name = @attributes[SITE_NAME_KEY]
     @site_url = @attributes[SITE_URL_KEY]
     @output_file_suffix = @attributes[OUTPUT_FILE_SUFFIX_KEY]
+    @output_folder = @attributes[OUTPUT_FOLDER_KEY]
     @rsync_path = @attributes[RSYNC_PATH_KEY]
     @favicon_url = @attributes[FAVICON_URL_KEY]
     @icon_url = @attributes[ICON_URL_KEY]

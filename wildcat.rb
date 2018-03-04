@@ -1,11 +1,14 @@
 class Wildcat
 
-  def initialize(project_folder, settings_file)
-
+  def initialize(project_folder, settings_file_name)
+    settings_file_path = File.join(project_folder, settings_file_name)
+    @settings = WebsiteSettings.new(project_folder, settings_file_path)
+    @website = Website.new(settings)
   end
 
   def build
-
+    @website.build
+    # TODO: rsync — check settings for rsync setting
   end
 end
 
@@ -36,6 +39,6 @@ ARGV.each do |arg|
   end
 end
 
-folder = Dir.pwd()
+folder = Dir.pwd
 wildcat = Wildcat.new(folder, settings_file)
 wildcat.build
