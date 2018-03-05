@@ -7,32 +7,41 @@
 class FileParser
 
   def self.attributes_and_text(path)
-
-    file = File.new(path)
-    pulling_attributes = true
-    attributes = {}
-    body = ""
-
-    file.each_line do |line|
-      if pulling_attributes
-        one_key, one_value = key_value_with_line(line)
-      end
-
-      if one_key.nil?
-        pulling_attributes = false
-      else
-        attributes[one_key] = one_value
-      end
-
-      body += line unless pulling_attributes
-    end
-
-    file.close
-
+    text = read_whole_file(path)
+    attributes = attributes_from_text(text)
+    body = body_from_text(text)
     return attributes, body
   end
 
+  def self.read_whole_file(path)
+    file = File.open(f, 'r')
+    text = file.read
+    file.close
+    text
+  end
+
   private
+
+  def self.attributes_from_text(text)
+
+    attributes = {}
+
+    text.each_line do |line|
+      one_key, one_value = key_value_with_line(line)
+      if one_key.nil?
+        break
+      else
+        attributes[one_key] = one_value
+      end
+    end
+
+    attributes
+  end
+
+  def self.body_from_text(text)
+    text[0,text.index(/^[^@]/)] = "" #remove @attributes
+    text
+  end
 
 	def self.key_value_with_line(line)
 		if line[0,1] != '@' then return nil, nil end
