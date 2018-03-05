@@ -27,14 +27,14 @@ class JSONFeed
 
   def add_header(json_data)
 
-		json_data['version'] = 'https://jsonfeed.org/version/1'
+    json_data['version'] = 'https://jsonfeed.org/version/1'
 
-		json_data['user_comment'] = "This feed allows you to read the posts from this site in any feed reader that supports the JSON Feed format. To add this feed to your reader, copy the following URL — #{settings.feed_url} — and add it your reader."
+    json_data['user_comment'] = "This feed allows you to read the posts from this site in any feed reader that supports the JSON Feed format. To add this feed to your reader, copy the following URL — #{settings.feed_url} — and add it your reader."
 
-		json_data['title'] = settings.feed_title
-		json_data['description'] = settings.feed_description
-		json_data['home_page_url'] = settings.blog_url
-		json_data['feed_url'] = settings.feed_url
+    json_data['title'] = settings.feed_title
+    json_data['description'] = settings.feed_description
+    json_data['home_page_url'] = settings.blog_url
+    json_data['feed_url'] = settings.feed_url
 
     add_if_not_empty(json_data, 'favicon', settings.favicon_url)
     add_if_not_empty(json_data, 'icon', settings.icon_url)
