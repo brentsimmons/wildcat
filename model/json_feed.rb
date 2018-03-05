@@ -13,9 +13,7 @@ class JSONFeed
   end
 
   def to_text
-    if @rendered_text then return @rendered_text end
-    @rendered_text = build_feed
-    @rendered_text
+    build_feed
   end
 
   private

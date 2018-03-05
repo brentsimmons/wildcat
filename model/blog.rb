@@ -5,9 +5,12 @@ class Blog
   end
 
   def build
-    build_post_archive_pages # Individual pages per post
-    build_month_archive_pages
-    build_list_of_months_page
+
+    @posts = all_blog_posts_reverse_sorted_by_date
+
+    blog_archive = BlogArchive.new(settings, posts)
+    blog_archive.build
+
     build_home_page
     build_json_feed
     build_rss_feed
@@ -15,13 +18,7 @@ class Blog
 
   private
 
-  def build_post_archive_pages
-  end
-
-  def build_month_archive_pages
-  end
-
-  def build_list_of_months_page
+  def all_blog_posts_reverse_sorted_by_date
   end
 
   def build_home_page

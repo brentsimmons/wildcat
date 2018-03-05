@@ -25,7 +25,11 @@ class Website
   end
 
   def build_home_page
+    # Only used if no blog.
   end
+
+  # Files in images/, styles/, and downloads/ are copied
+  # to corresponding folders in output.
 
   def copy_files
     copy_images

@@ -8,8 +8,17 @@ class Wildcat
 
   def build
     @website.build
-    # TODO: rsync — check settings for rsync setting
+    perform_rsync_if_needed
   end
+
+  private
+
+  def perform_rsync_if_needed
+
+    # TODO: rsync — check settings for rsync setting
+
+  end
+
 end
 
 # Command-line
