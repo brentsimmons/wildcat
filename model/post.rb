@@ -14,7 +14,8 @@ class Post
   LINK_KEY = 'link'
   PUB_DATE_KEY = 'pubDate'
 
-  def initialize(file) # file is a WildcatFile
+  def initialize(permalink, file) # file is a WildcatFile
+    @permalink = permalink
     @attributes = file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]

@@ -52,4 +52,18 @@ module WildcatUtils
     paths
   end
 
+  def WildcatUtils.change_source_suffix_to_output_suffix(path, output_suffix)
+
+    # output_suffix should start with a . or be empty.
+    # Only chops off .html and .markdown suffixes.
+
+    path_array = filename.split(".")
+    if path_array.last == "markdown" || path_array.last == "html"
+      path_array.delete_at(path_array.length - 1)
+      path = path_array.join(".")
+    end
+
+    path + output_suffix
+  end
+
 end
