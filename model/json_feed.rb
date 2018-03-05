@@ -43,7 +43,7 @@ class JSONFeed
 
   def add_posts(json_data)
     items = @posts.map {|post| post.to_json_feed_component}
-		json_data['items'] = items
+    json_data['items'] = items
   end
 
   def author
