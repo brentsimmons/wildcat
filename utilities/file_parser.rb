@@ -4,16 +4,16 @@
 # Works for posts, pages, and wildcat_settings.
 
 
-class FileParser
+module FileParser
 
-  def self.attributes_and_text(path)
+  def FileParser.attributes_and_text(path)
     text = read_whole_file(path)
     attributes = attributes_from_text(text)
     body = body_from_text(text)
     return attributes, body
   end
 
-  def self.read_whole_file(path)
+  def FileParser.read_whole_file(path)
     file = File.open(f, 'r')
     text = file.read
     file.close
@@ -22,7 +22,7 @@ class FileParser
 
   private
 
-  def self.attributes_from_text(text)
+  def FileParser.attributes_from_text(text)
 
     attributes = {}
 
@@ -38,12 +38,12 @@ class FileParser
     attributes
   end
 
-  def self.body_from_text(text)
+  def FileParser.body_from_text(text)
     text[0,text.index(/^[^@]/)] = "" #remove @attributes
     text
   end
 
-	def self.key_value_with_line(line)
+	def FileParser.key_value_with_line(line)
 		if line[0,1] != '@' then return nil, nil end
 
 		index_of_space = line.index(' ')
