@@ -12,6 +12,7 @@ class WebsiteSettings
   attr_reader :favicon_url
   attr_reader :icon_url
   attr_reader :has_blog
+  attr_reader :style_sheet_url
 
   attr_reader :posts_folder # blog posts
   attr_reader :pages_folder
@@ -68,6 +69,7 @@ class WebsiteSettings
     @favicon_url = @attributes[FAVICON_URL_KEY]
     @icon_url = @attributes[ICON_URL_KEY]
     @has_blog = @attributes[HAS_BLOG_KEY]
+    @style_sheet_url = File.join(@site_url, 'styles/styleSheet.css')
 
     @posts_folder = File.join(project_folder, 'posts/')
     @pages_folder = File.join(project_folder, 'pages/')
