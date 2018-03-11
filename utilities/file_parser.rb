@@ -14,7 +14,7 @@ module FileParser
   end
 
   def FileParser.read_whole_file(path)
-    file = File.open(f, 'r')
+    file = File.open(path, 'r')
     text = file.read
     file.close
     text

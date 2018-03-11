@@ -1,9 +1,14 @@
+#!/usr/bin/env ruby -wU
+
+require_relative 'model/website_settings'
+require_relative 'model/website'
+
 class Wildcat
 
   def initialize(project_folder, settings_file_name)
     settings_file_path = File.join(project_folder, settings_file_name)
     @settings = WebsiteSettings.new(project_folder, settings_file_path)
-    @website = Website.new(settings)
+    @website = Website.new(@settings)
   end
 
   def build

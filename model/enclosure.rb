@@ -1,3 +1,5 @@
+require_relative '../wildcat_constants'
+
 class Enclosure
 
   attr_reader :url
@@ -13,10 +15,6 @@ class Enclosure
     @mime_type = attributes[ENCLOSURE_TYPE_KEY]
     @size_in_bytes = attributes[ENCLOSURE_LENGTH_KEY].to_s
   end
-
-  JSON_FEED_ENCLOSURE_URL = 'url'
-  JSON_FEED_ENCLOSURE_MIME_TYPE = 'mime_type'
-  JSON_FEED_ENCLOSURE_SIZE_IN_BYTES = 'size_in_bytes'
 
   def to_json_feed_component
 

@@ -1,3 +1,6 @@
+require_relative '../utilities/wildcat_utils'
+require_relative '../renderer/renderer'
+
 class Page
 
   def self.build_all_pages(settings)
@@ -5,17 +8,43 @@ class Page
     pages.each { |page| page.build }
   end
 
-  def initialize(path, settings)
-
-  end
-
   def build
-
+    WildcatUtils.write_file_if_different(@output_path, to_html)
   end
 
   private
 
   def self.all_pages(settings)
+    paths = WildcatUtils.text_source_files_in_folder(settings.pages_folder)
+    paths.map { |path| Page.new(settings, WildcatFile.new(path)) }
   end
 
+  def initialize(settings, wildcat_file)
+    @path = wildcat_file.path
+    @settings = settings
+    @output_path, @permalink = WildcatUtils.paths(@path, settings.pages_folder, settings.output_folder, settings.site_url, settings.output_file_suffix)
+    @content_html = wildcat_file.to_html
+    @title = wildcat_file.attributes[TITLE_KEY]
+    @pub_date = wildcat_file.attributes[PUB_DATE_KEY]
+  end
+
+  def context
+
+    context = {}
+
+    context[CONTEXT_PERMALINK_KEY] = @permalink
+    context[CONTEXT_TITLE_KEY] = @title
+    context[CONTEXT_CONTENT_HTML_KEY] = @content_html
+
+    if !@pub_date.nil?
+      context[CONTEXT_DISPLAY_DATE_KEY] = @pub_date.strftime("%d %b %Y")
+    end
+
+    context
+  end
+
+  def to_html
+    renderer = Renderer.new(@settings, 'page', context)
+    renderer.to_html
+  end
 end

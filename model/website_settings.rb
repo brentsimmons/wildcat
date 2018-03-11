@@ -1,4 +1,4 @@
-require_relative('../utilities/wildcat_file')
+require_relative '../utilities/wildcat_file'
 
 class WebsiteSettings
 
@@ -25,6 +25,7 @@ class WebsiteSettings
   attr_reader :blog_destination_folder
   attr_reader :blog_number_of_posts
   attr_reader :blog_home_page_title
+  attr_reader :blog_archive_title
   attr_reader :blog_url
   attr_reader :blog_relative_path
 
@@ -47,6 +48,7 @@ class WebsiteSettings
 
   BLOG_NUMBER_OF_POSTS_KEY = 'blog_number_of_posts_on_home_page'
   BLOG_HOME_PAGE_TITLE_KEY = 'blog_home_page_title'
+  BLOG_ARCHIVE_TITLE_KEY = 'blog_archive_title'
   BLOG_RELATIVE_PATH_KEY = 'blog_relative_path'
 
   FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'
@@ -87,6 +89,7 @@ class WebsiteSettings
 
     @blog_number_of_posts = @attributes.fetch(BLOG_NUMBER_OF_POSTS_KEY, 20)
     @blog_home_page_title = @attributes.fetch(BLOG_HOME_PAGE_TITLE_KEY, 'weblog')
+    @blog_archive_title = @attributes.fetch(BLOG_ARCHIVE_TITLE_KEY, 'weblog archive')
     @blog_url = @blog_relative_path ? site_url + @blog_relative_path : site_url
 
     @feed_number_of_posts = @attributes.fetch(FEED_NUMBER_OF_POSTS_KEY, 20)

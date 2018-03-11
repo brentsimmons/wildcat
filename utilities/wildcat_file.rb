@@ -3,6 +3,7 @@
 
 require 'rdiscount'
 require_relative 'file_parser'
+require_relative '../wildcat_constants'
 
 class WildcatFile
 
@@ -19,13 +20,13 @@ class WildcatFile
 
     @path = path
     @text_type = text_type_from_path(path)
-    @attributes, @text = FileParser(path)
-
+    @attributes, @text = FileParser.attributes_and_text(path)
+    @rendered_text = ""
     @@cache[path] = self
   end
 
   def to_html
-    if !@rendered_text
+    if @rendered_text.empty?
       @rendered_text = render_text
     end
     @rendered_text
@@ -35,16 +36,13 @@ class WildcatFile
 
   @@cache = {}
 
-  SUFFIX_MARKDOWN = '.markdown'
-  SUFFIX_HTML = '.html'
-
   def text_type_from_path(path)
-    if path.end_with?(SUFFIX_MARKDOWN) then return TEXT_TYPE_MARKDOWN end
-    if path.end_with?(SUFFIX_HTML) then return TEXT_TYPE_HTML end
+    if path.end_with?(MARKDOWN_SUFFIX) then return TEXT_TYPE_MARKDOWN end
+    if path.end_with?(HTML_SUFFIX) then return TEXT_TYPE_HTML end
     return TEXT_TYPE_UNKNOWN
   end
 
   def render_text
-      text_type == TEXT_TYPE_MARKDOWN ? RDiscount.new(@text).to_html : @text
+     @text_type == TEXT_TYPE_MARKDOWN ? RDiscount.new(@text).to_html : @text
   end
 end

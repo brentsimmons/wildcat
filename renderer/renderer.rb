@@ -9,8 +9,8 @@ class Renderer
   BEGIN_SNIPPET_CHARACTERS_COUNT = 3
   END_SNIPPET_CHARACTERS = "]]"
   END_SNIPPET_CHARACTERS_COUNT = 2
-  BEGIN_SUBSTITUTION_CHARACTERS = "[["
-  BEGIN_SUBSTITUTION_CHARACTERS_COUNT = 2
+  BEGIN_SUBSTITUTION_CHARACTERS = "[[@"
+  BEGIN_SUBSTITUTION_CHARACTERS_COUNT = 3
   END_SUBSTITUTION_CHARACTERS = "]]"
   END_SUBSTITUTION_CHARACTERS_COUNT = 2
 
@@ -57,11 +57,11 @@ class Renderer
     indexesOfCharacters(text, BEGIN_SNIPPET_CHARACTERS).reverse_each {|index| process_one_snippet(text, index)}
   end
 
-  def process_one_snippet(text, index)
+  def process_one_snippet(text, ix)
     ix_end = text.index(END_SNIPPET_CHARACTERS, ix)
     if ix_end.nil? then return end
     snippet_filename = text[ix + BEGIN_SNIPPET_CHARACTERS_COUNT, ix_end - (ix + BEGIN_SNIPPET_CHARACTERS_COUNT)]
-    snippet_text = read_snippet(snippet_filename))
+    snippet_text = read_snippet(snippet_filename)
     if snippet_text.nil? then return end
     process_snippets(snippet_text)
     text[ix, (ix_end + END_SNIPPET_CHARACTERS_COUNT) - ix] = snippet_text
@@ -72,14 +72,14 @@ class Renderer
     text
   end
 
-  def process_one_substition(text, index)
+  def process_one_substitution(text, ix)
     ix_end = text.index(END_SUBSTITUTION_CHARACTERS, ix)
     if ix_end == nil then return end
     substitution = text[ix + BEGIN_SUBSTITUTION_CHARACTERS_COUNT, ix_end - (ix + BEGIN_SUBSTITUTION_CHARACTERS_COUNT)]
     result = @context[substitution]
-    if result?.nil
+    if result.nil?
       result = UNDEFINED_SUBSTITUTION
-      puts "Undefined substitution: #{substitution} #{@context}"
+      puts "Undefined substitution: #{substitution}"
     end
     text[ix, (ix_end + END_SUBSTITUTION_CHARACTERS_COUNT) - ix] = result
   end

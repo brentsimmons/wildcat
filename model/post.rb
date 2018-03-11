@@ -11,14 +11,10 @@ class Post
   attr_reader :attributes
   attr_reader :source_path
 
-  TITLE_KEY = 'title'
-  LINK_KEY = 'link'
-  PUB_DATE_KEY = 'pubDate'
-
-  def initialize(settings, permalink, file) # file is a WildcatFile
-    @source_path = file.path
+  def initialize(settings, wildcat_file)
+    @source_path = wildcat_file.path
     @permalink = permalink
-    @attributes = file.attributes
+    @attributes = wildcat_file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]
     @content_html = file.to_html
@@ -29,14 +25,6 @@ class Post
       @enclosure = Enclosure(@attributes)
     end
   end
-
-  JSON_FEED_URL_KEY = 'url'
-  JSON_FEED_EXTERNAL_URL_KEY = 'external_url'
-  JSON_FEED_ID_KEY = 'id'
-  JSON_FEED_TITLE_KEY = 'title'
-  JSON_FEED_CONTENT_HTML_KEY = 'content_html'
-  JSON_FEED_PUB_DATE_KEY = 'date_published'
-  JSON_FEED_ATTACHMENTS_KEY = 'attachments'
 
   def to_json_feed_component
 
@@ -103,18 +91,7 @@ class Post
     if @title.nil? || @title.empty? then template_name += '_no_title' end
 
     template_name
- end
-
-  # These can all be referenced in the post template.
-  # They will be substituted at build time.
-
-  PERMALINK_KEY = 'permalink'
-  EXTERNAL_URL_KEY = 'external_url'
-  LINK_PREFERRING_EXTERNAL_URL_KEY = 'link_preferring_external_url' # Use external_url when present, falling back to permalink.
-  TITLE_KEY = 'title'
-  CONTENT_HTML_KEY = 'body'
-  PUB_DATE_KEY = 'pub_date'
-  DISPLAY_DATE_KEY = 'display_date'
+  end
 
   def context
 
