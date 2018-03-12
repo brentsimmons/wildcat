@@ -3,6 +3,7 @@
 #
 # Works for posts, pages, and wildcat_settings.
 
+require 'Time'
 
 module FileParser
 
@@ -39,7 +40,10 @@ module FileParser
   end
 
   def FileParser.body_from_text(text)
-    text[0,text.index(/^[^@]/)] = "" #remove @attributes
+    # Remove @attributes.
+    ix = text.index(/^[^@]/)
+    if ix == nil then return "" end
+    text[0,ix] = ""
     text
   end
 

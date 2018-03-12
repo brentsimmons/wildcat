@@ -1,5 +1,10 @@
 class RSSFeed
 
+  def self.rendered_feed(settings, posts)
+    feed = RSSFeed.new(settings, posts)
+    feed.to_text
+  end
+
   def initialize(settings, posts)
 
 

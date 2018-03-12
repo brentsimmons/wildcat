@@ -1,45 +1,47 @@
+require_relative '../utilities/wildcat_file'
 require_relative 'enclosure'
 
 class Post
 
-  attr_reader :permalink
-  attr_reader :external_url
-  attr_reader :title
-  attr_reader :content_html
   attr_reader :pub_date
-  attr_reader :enclosure
-  attr_reader :attributes
-  attr_reader :source_path
 
   def initialize(settings, wildcat_file)
+    @settings = settings
     @source_path = wildcat_file.path
-    @permalink = permalink
+    @destination_path, @permalink = WildcatUtils.paths(@source_path, @settings.posts_folder, @settings.blog_output_folder, @settings.site_url, @settings.output_file_suffix)
     @attributes = wildcat_file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]
-    @content_html = file.to_html
+    @content_html = wildcat_file.to_html
     @pub_date = @attributes[PUB_DATE_KEY]
 
     enclosure_url = @attributes[ENCLOSURE_URL_KEY]
     if !enclosure_url.nil? && !enclosure_url.empty?
       @enclosure = Enclosure(@attributes)
+    else
+      @enclosure = nil
     end
+
   end
 
   def to_json_feed_component
 
     json = {}
-    json[JSON_FEED_ID_KEY] = @permalink
-    json[JSON_FEED_URL_KEY] = @permalink
-    json[JSON_FEED_CONTENT_HTML_KEY] = @content_html
+
+    add_if_not_empty(json, JSON_FEED_TITLE_KEY, @title)
 
     date_string = @pub_date.iso8601
     json[JSON_FEED_PUB_DATE_KEY] = date_string
 
+    json[JSON_FEED_ID_KEY] = @permalink
+    json[JSON_FEED_URL_KEY] = @permalink
+
     add_if_not_empty(json, JSON_FEED_EXTERNAL_URL_KEY, @external_url)
 
-    if enclosure
-      enclosure_json = enclosure.to_json_feed_component
+    json[JSON_FEED_CONTENT_HTML_KEY] = @content_html
+
+    if !@enclosure.nil?
+      enclosure_json = @enclosure.to_json_feed_component
       json[JSON_FEED_ATTACHMENTS_KEY] = [enclosure_json]
     end
 
@@ -55,7 +57,7 @@ class Post
     if including_link
       if @rendered_html_including_link then return @rendered_html_including_link end
     else
-      if @rendered_html then return @rendered_html
+      if @rendered_html then return @rendered_html end
     end
 
     template_name = template_name(including_link)

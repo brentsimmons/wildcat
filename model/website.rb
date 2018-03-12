@@ -11,7 +11,7 @@ class Website
 
     build_pages
 
-    if settings.has_blog
+    if @settings.has_blog
       blog = Blog.new(@settings)
       blog.build
     end

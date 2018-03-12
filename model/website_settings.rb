@@ -22,7 +22,7 @@ class WebsiteSettings
   attr_reader :templates_folder
   attr_reader :snippets_folder
 
-  attr_reader :blog_destination_folder
+  attr_reader :blog_output_folder
   attr_reader :blog_number_of_posts
   attr_reader :blog_home_page_title
   attr_reader :blog_archive_title
@@ -42,8 +42,8 @@ class WebsiteSettings
   OUTPUT_FILE_SUFFIX_KEY = 'output_file_suffix'
   OUTPUT_FOLDER_KEY = 'output_folder'
   RSYNC_PATH_KEY = 'rsync_path'
-  FAVICON_URL_KEY = 'favicon'
-  ICON_URL_KEY = 'icon'
+  FAVICON_URL_KEY = 'favicon_url'
+  ICON_URL_KEY = 'icon_url'
   HAS_BLOG_KEY = 'has_blog'
 
   BLOG_NUMBER_OF_POSTS_KEY = 'blog_number_of_posts_on_home_page'
@@ -56,7 +56,7 @@ class WebsiteSettings
   FEED_DESCRIPTION_KEY = 'feed_description'
   FEED_AUTHOR_NAME_KEY = 'feed_author'
   FEED_AUTHOR_URL_KEY = 'feed_author_url'
-  FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar'
+  FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'
 
   def initialize(project_folder, settings_file_path)
     @project_folder = project_folder
@@ -82,9 +82,9 @@ class WebsiteSettings
     @snippets_folder = File.join(project_folder, 'snippets/')
 
     @blog_relative_path = @attributes[BLOG_RELATIVE_PATH_KEY]
-    @blog_destination_folder = @output_folder
+    @blog_output_folder = @output_folder
     if !@blog_relative_path.nil? && !@blog_relative_path.empty?
-      @blog_destination_folder = File.join(@output_folder, @blog_relative_path)
+      @blog_output_folder = File.join(@output_folder, @blog_relative_path)
     end
 
     @blog_number_of_posts = @attributes.fetch(BLOG_NUMBER_OF_POSTS_KEY, 20)
