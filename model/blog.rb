@@ -20,7 +20,7 @@ class Blog
 #
 #     build_home_page
     build_json_feed
-#     build_rss_feed
+    build_rss_feed
   end
 
   private

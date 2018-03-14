@@ -3,7 +3,12 @@ require_relative 'enclosure'
 
 class Post
 
+  attr_reader :title
+  attr_reader :content_html
+  attr_reader :permalink
+  attr_reader :external_url
   attr_reader :pub_date
+  attr_reader :enclosure
 
   def initialize(settings, wildcat_file)
     @settings = settings
