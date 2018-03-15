@@ -1,5 +1,3 @@
-require 'Builder'
-
 class RSSFeed
 
   RSS_TAG = 'rss'
@@ -51,6 +49,7 @@ class RSSFeed
   end
 
   def add_post(post)
+  	push_new_line
     push_stand_alone_tag(ITEM_TAG)
     @indent_level += 1
 
@@ -76,6 +75,7 @@ class RSSFeed
   end
 
   def add_footer
+  	push_new_line
     @indent_level -= 1
     push_stand_alone_closing_tag(CHANNEL_TAG)
     @indent_level -= 1
