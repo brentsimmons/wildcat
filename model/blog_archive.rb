@@ -46,6 +46,15 @@ class BlogArchive
   end
 
   def build_month_pages
+    @years.values.each { |blog_year| build_month_pages_for_year(blog_year) }
+  end
+
+  def build_month_pages_for_year(blog_year)
+    blog_year.months.values.each { |blog_month| build_month_page(blog_year, blog_month) }
+  end
+
+  def build_month_page(blog_year, blog_month)
+
   end
 
   def build_year_month_index_page

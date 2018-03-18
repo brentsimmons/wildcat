@@ -57,10 +57,6 @@ class Blog
     WildcatUtils.write_file_if_different(destination_path, feed_text)
   end
 
-  def calculate_permalink(path)
-    # TODO: figure out permalink for a blog post based on its local path.
-  end
-
   def posts_for_feed
     recent_posts(@settings.feed_number_of_posts)
   end
