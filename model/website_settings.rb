@@ -28,6 +28,7 @@ class WebsiteSettings
   attr_reader :blog_archive_title
   attr_reader :blog_url
   attr_reader :blog_relative_path
+  attr_reader :blog_month_names
 
   attr_reader :feed_number_of_posts
   attr_reader :feed_title
@@ -59,6 +60,7 @@ class WebsiteSettings
   BLOG_HOME_PAGE_TITLE_KEY = 'blog_home_page_title'
   BLOG_ARCHIVE_TITLE_KEY = 'blog_archive_title'
   BLOG_RELATIVE_PATH_KEY = 'blog_relative_path'
+  BLOG_MONTH_NAMES_KEY = 'blog_month_names'
 
   FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'
   FEED_TITLE_KEY = 'feed_title'
@@ -108,7 +110,11 @@ class WebsiteSettings
     @blog_number_of_posts = @attributes.fetch(BLOG_NUMBER_OF_POSTS_KEY, 20)
     @blog_home_page_title = @attributes.fetch(BLOG_HOME_PAGE_TITLE_KEY, 'weblog')
     @blog_archive_title = @attributes.fetch(BLOG_ARCHIVE_TITLE_KEY, 'weblog archive')
-    @blog_url = @blog_relative_path ? site_url + @blog_relative_path : site_url
+    @blog_url = site_url
+    if !@blog_relative_path.nil? && !@blog_relative_path.empty?
+      @blog_url = File.join(blog_url, @blog_relative_path)
+    end
+    @blog_month_names = @attributes.fetch(BLOG_MONTH_NAMES_KEY, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
 
     @feed_number_of_posts = @attributes.fetch(FEED_NUMBER_OF_POSTS_KEY, 20)
     @feed_title = @attributes.fetch(FEED_TITLE_KEY, @site_name)

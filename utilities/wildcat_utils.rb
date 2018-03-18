@@ -94,4 +94,8 @@ module WildcatUtils
     path + output_suffix
   end
 
+  def WildcatUtils.add_suffix_if_needed(path, suffix)
+    if suffix.nil? || suffix.empty? then return path end
+    path + suffix
+  end
 end

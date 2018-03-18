@@ -2,12 +2,14 @@ require_relative 'post'
 
 class BlogMonth
 
-  def initialize(month_num)
-    @month_num = month_num
-    @posts = {}
+  attr_reader :month
+
+  def initialize(month)
+    @month = month
+    @posts = []
   end
 
   def add_post(post)
-    @posts.push(post) unless @posts.include?(post)
+    @posts.push(post)
   end
 end

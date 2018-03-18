@@ -1,7 +1,7 @@
 require 'date'
-require_relative 'blog_archive_month'
+require_relative 'blog_month'
 
-class BlogArchiveYear
+class BlogYear
 
 	attr_reader :year
 	attr_reader :months
@@ -10,13 +10,6 @@ class BlogArchiveYear
 
 		@year = year
 		@months = {}
-	end
-
-	def add_month(month_num)
-
-		if !@months.include?(month_num)
-			@months.push(month_num)
-		end
 	end
 
 	def add_post(post)
@@ -30,4 +23,12 @@ class BlogArchiveYear
 
     blog_month.add_post(post)
 	end
+
+	private
+
+  def add_month(month_num)
+    if !@months.include?(month_num)
+      @months.push(month_num)
+    end
+  end
 end
