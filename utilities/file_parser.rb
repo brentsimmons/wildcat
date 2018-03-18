@@ -57,7 +57,7 @@ module FileParser
 		value = line[index_of_space + 1, line.length - (index_of_space + 1)]
 		value.strip!
 
-		if /\D/.match(value) == nil #it's an integer
+		if /\D/.match(value) == nil && key != 'title' #it's an integer
 			value = value.to_i
 		end
 

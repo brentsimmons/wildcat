@@ -4,6 +4,7 @@ require_relative 'json_feed'
 require_relative 'rss_feed'
 require_relative 'website_settings'
 require_relative 'post'
+require_relative 'blog_archive'
 
 class Blog
 
@@ -15,9 +16,9 @@ class Blog
 
     @posts = all_blog_posts_reverse_sorted_by_date
 
-#     blog_archive = BlogArchive.new(settings, posts)
-#     blog_archive.build
-#
+    blog_archive = BlogArchive.new(@settings, @posts)
+    blog_archive.build
+
 #     build_home_page
     build_json_feed
     build_rss_feed

@@ -1,3 +1,4 @@
+require_relative '../wildcat_constants'
 require_relative '../utilities/wildcat_file'
 require_relative 'enclosure'
 
@@ -9,6 +10,7 @@ class Post
   attr_reader :external_url
   attr_reader :pub_date
   attr_reader :enclosure
+  attr_reader :destination_path # path to permalink version
 
   def initialize(settings, wildcat_file)
     @settings = settings
@@ -19,6 +21,8 @@ class Post
     @title = @attributes[TITLE_KEY]
     @content_html = wildcat_file.to_html
     @pub_date = @attributes[PUB_DATE_KEY]
+    @rendered_html_including_link = nil
+    @rendered_html = nil
 
     enclosure_url = @attributes[ENCLOSURE_URL_KEY]
     if !enclosure_url.nil? && !enclosure_url.empty?
@@ -104,19 +108,19 @@ class Post
 
     context = {}
 
-    context[PERMALINK_KEY] = @permalink
-    context[EXTERNAL_URL_KEY] = @external_url
+    context[CONTEXT_PERMALINK_KEY] = @permalink
+    context[CONTEXT_EXTERNAL_URL_KEY] = @external_url
 
     if !@external_url.nil?
-      context[LINK_PREFERRING_EXTERNAL_URL_KEY] = @external_url
+      context[CONTEXT_LINK_PREFERRING_EXTERNAL_URL_KEY] = @external_url
     else
-      context[LINK_PREFERRING_EXTERNAL_URL_KEY] = @permalink
+      context[CONTEXT_LINK_PREFERRING_EXTERNAL_URL_KEY] = @permalink
     end
 
-    context[TITLE_KEY] = @title
-    context[CONTENT_HTML_KEY] = @content_html
-    context[PUB_DATE_KEY] = @pub_date
-    context[DISPLAY_DATE_KEY] = @pub_date.strftime("%d %b %Y")
+    context[CONTEXT_TITLE_KEY] = @title
+    context[CONTEXT_CONTENT_HTML_KEY] = @content_html
+    context[CONTEXT_PUB_DATE_KEY] = @pub_date
+    context[CONTEXT_DISPLAY_DATE_KEY] = @pub_date.strftime("%d %b %Y")
 
     context
   end
