@@ -8,7 +8,7 @@ class WebsiteSettings
   attr_reader :site_url
   attr_reader :output_file_suffix
   attr_reader :output_folder
-  attr_reader :rsync_path
+  attr_reader :rsync_remote_path
   attr_reader :favicon_url
   attr_reader :icon_url
   attr_reader :has_blog
@@ -54,7 +54,7 @@ class WebsiteSettings
   SITE_URL_KEY = 'site_url'
   OUTPUT_FILE_SUFFIX_KEY = 'output_file_suffix'
   OUTPUT_FOLDER_KEY = 'output_folder'
-  RSYNC_PATH_KEY = 'rsync_path'
+  RSYNC_REMOTE_PATH_KEY = 'rsync_remote_path'
   FAVICON_URL_KEY = 'favicon_url'
   ICON_URL_KEY = 'icon_url'
   HAS_BLOG_KEY = 'has_blog'
@@ -98,7 +98,7 @@ class WebsiteSettings
     @site_url = @attributes[SITE_URL_KEY]
     @output_file_suffix = @attributes[OUTPUT_FILE_SUFFIX_KEY]
     @output_folder = @attributes[OUTPUT_FOLDER_KEY]
-    @rsync_path = @attributes[RSYNC_PATH_KEY]
+    @rsync_remote_path = @attributes[RSYNC_REMOTE_PATH_KEY]
     @favicon_url = @attributes[FAVICON_URL_KEY]
     @icon_url = @attributes[ICON_URL_KEY]
     @has_blog = @attributes[HAS_BLOG_KEY]

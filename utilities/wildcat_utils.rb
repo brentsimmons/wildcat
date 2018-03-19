@@ -42,6 +42,10 @@ module WildcatUtils
     Open3.popen3("rsync", "-azu", source, dest)[1].read
   end
 
+  def WildcatUtils.rsync_remote(source, dest)
+    Open3.popen3("rsync", "-avzu", source, dest)[1].read
+  end
+
   def WildcatUtils.files_in_folder(folder)
 
     # Doesn’t look in folders that start with a . character.
