@@ -19,7 +19,12 @@ class Post
     @attributes = wildcat_file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]
+    
     @content_html = wildcat_file.to_html
+    if !@content_html.start_with?('<p>')
+    	@content_html = '<p>' + content_html
+    end
+    
     @pub_date = @attributes[PUB_DATE_KEY]
     @rendered_html_including_link = nil
     @rendered_html = nil
