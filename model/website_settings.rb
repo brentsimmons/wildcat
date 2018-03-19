@@ -12,7 +12,6 @@ class WebsiteSettings
   attr_reader :favicon_url
   attr_reader :icon_url
   attr_reader :has_blog
-  attr_reader :style_sheet_url
 
   attr_reader :posts_folder # blog posts
   attr_reader :pages_folder
@@ -21,6 +20,10 @@ class WebsiteSettings
   attr_reader :downloads_folder
   attr_reader :templates_folder
   attr_reader :snippets_folder
+
+  attr_reader :images_destination
+  attr_reader :styles_destination
+  attr_reader :downloads_destination
 
   attr_reader :blog_output_folder
   attr_reader :blog_number_of_posts
@@ -78,6 +81,14 @@ class WebsiteSettings
   FEED_ITUNES_OWNER_EMAIL = 'feed_itunes_owner_email'
   FEED_ITUNES_CATEGORY = 'feed_itunes_category'
 
+  FOLDER_NAME_POSTS = 'posts'
+  FOLDER_NAME_PAGES = 'pages'
+  FOLDER_NAME_TEMPLATES = 'templates'
+  FOLDER_NAME_SNIPPETS = 'snippets'
+  FOLDER_NAME_IMAGES = 'images'
+  FOLDER_NAME_STYLES = 'styles'
+  FOLDER_NAME_DOWNLOADS = 'downloads'
+
   def initialize(project_folder, settings_file_path)
     @project_folder = project_folder
     wildcat_file = WildcatFile.new(settings_file_path)
@@ -91,15 +102,18 @@ class WebsiteSettings
     @favicon_url = @attributes[FAVICON_URL_KEY]
     @icon_url = @attributes[ICON_URL_KEY]
     @has_blog = @attributes[HAS_BLOG_KEY]
-    @style_sheet_url = File.join(@site_url, 'styles/styleSheet.css')
 
-    @posts_folder = File.join(project_folder, 'posts/')
-    @pages_folder = File.join(project_folder, 'pages/')
-    @styles_folder = File.join(project_folder, 'styles/')
-    @images_folder = File.join(project_folder, 'images/')
-    @downloads_folder = File.join(project_folder, 'downloads/')
-    @templates_folder = File.join(project_folder, 'templates/')
-    @snippets_folder = File.join(project_folder, 'snippets/')
+    @posts_folder = File.join(project_folder, FOLDER_NAME_POSTS + '/')
+    @pages_folder = File.join(project_folder, FOLDER_NAME_PAGES + '/')
+    @styles_folder = File.join(project_folder, FOLDER_NAME_STYLES + '/')
+    @images_folder = File.join(project_folder, FOLDER_NAME_IMAGES + '/')
+    @downloads_folder = File.join(project_folder, FOLDER_NAME_DOWNLOADS + '/')
+    @templates_folder = File.join(project_folder, FOLDER_NAME_TEMPLATES + '/')
+    @snippets_folder = File.join(project_folder, FOLDER_NAME_SNIPPETS + '/')
+
+    @images_destination = File.join(@output_folder, FOLDER_NAME_IMAGES + '/')
+    @styles_destination = File.join(@output_folder, FOLDER_NAME_STYLES + '/')
+    @downloads_destination = File.join(@output_folder, FOLDER_NAME_DOWNLOADS + '/')
 
     @blog_relative_path = @attributes[BLOG_RELATIVE_PATH_KEY]
     @blog_output_folder = @output_folder

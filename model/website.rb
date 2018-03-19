@@ -1,5 +1,6 @@
 require_relative 'page'
 require_relative 'blog'
+require_relative '../utilities/wildcat_utils'
 
 class Website
 
@@ -16,7 +17,7 @@ class Website
       blog.build
     end
 
-#     copy_files
+    copy_files
   end
 
   private
@@ -35,11 +36,14 @@ class Website
   end
 
   def copy_images
+    WildcatUtils.rsync_local(@settings.images_folder, @settings.images_destination)
   end
 
   def copy_style_sheets
+    WildcatUtils.rsync_local(@settings.styles_folder, @settings.styles_destination)
   end
 
   def copy_downloads
+    WildcatUtils.rsync_local(@settings.downloads_folder, @settings.downloads_destination)
   end
 end

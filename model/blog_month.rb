@@ -12,4 +12,10 @@ class BlogMonth
   def add_post(post)
     @posts.push(post)
   end
+
+  def to_html
+    html = ''
+    @posts.each { |post| html+= post.to_html(true) }
+    html
+  end
 end

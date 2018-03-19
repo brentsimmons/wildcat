@@ -15,7 +15,7 @@ class BlogArchive
   def build
     build_single_post_pages
     build_month_pages
-    build_year_month_index_page
+    build_index_page
   end
 
   private
@@ -42,7 +42,7 @@ class BlogArchive
     context = {}
     context[CONTEXT_TITLE_KEY] = post.title
     context[CONTEXT_CONTENT_HTML_KEY] = post.to_html(false) # not including permalink
-    PageBuilder.build(@settings, 'post_single_page', context, post.destination_path)
+    PageBuilder.build(@settings, 'archive_single_post', context, post.destination_path)
   end
 
   def build_month_pages
@@ -54,17 +54,26 @@ class BlogArchive
   end
 
   def build_month_page(blog_year, blog_month)
+    context = {}
+    month_name = @settings.blog_month_names[blog_month.month - 1]
+    context[CONTEXT_TITLE_KEY] = "#{month_name} #{blog_year.year}"
+    context[CONTEXT_CONTENT_HTML_KEY] = blog_month.to_html
 
+    relative_path = month_page_relative_path(blog_year, blog_month)
+    destination_path = File.join(@settings.blog_output_folder, relative_path)
+    destination_path = File.join(destination_path, 'index')
+    destination_path = WildcatUtils.add_suffix_if_needed(destination_path, @settings.output_file_suffix)
+    PageBuilder.build(@settings, 'archive_month', context, destination_path)
   end
 
-  def build_year_month_index_page
+  def build_index_page
     context = {}
     context[CONTEXT_TITLE_KEY] = @settings.blog_archive_title
     context[CONTEXT_CONTENT_HTML_KEY] = archive_index_html
 
     destination_path = File.join(@settings.blog_output_folder, 'archive')
     destination_path = WildcatUtils.add_suffix_if_needed(destination_path, @settings.output_file_suffix)
-    PageBuilder.build(@settings, 'archive', context, destination_path)
+    PageBuilder.build(@settings, 'archive_index', context, destination_path)
   end
 
   def sorted_years
@@ -100,6 +109,10 @@ class BlogArchive
   end
 
   def month_item_link(blog_year, blog_month)
+    month_page_relative_path(blog_year, blog_month)
+  end
+
+  def month_page_relative_path(blog_year, blog_month)
     month_string = blog_month.month.to_s.rjust(2, '0')
     "#{blog_year.year}/#{month_string}/"
   end

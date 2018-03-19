@@ -19,7 +19,7 @@ class Blog
     blog_archive = BlogArchive.new(@settings, @posts)
     blog_archive.build
 
-#     build_home_page
+    build_home_page
     build_json_feed
     build_rss_feed
   end
@@ -40,6 +40,16 @@ class Blog
   end
 
   def build_home_page
+    context = {}
+    context[CONTEXT_TITLE_KEY] = @settings.blog_home_page_title
+
+    html = ''
+    posts_for_home_page.each { |post| html+= post.to_html(true) }
+    context[CONTEXT_CONTENT_HTML_KEY] = html
+
+    destination_path = File.join(@settings.blog_output_folder, 'index')
+    destination_path = WildcatUtils.add_suffix_if_needed(destination_path, @settings.output_file_suffix)
+    PageBuilder.build(@settings, 'blog_home', context, destination_path)
   end
 
   def build_json_feed

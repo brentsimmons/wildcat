@@ -128,6 +128,6 @@ class Post
   def render_with_template(template_name)
 
     renderer = Renderer.new(@settings, template_name, context)
-    renderer.to_html
+    renderer.to_html + "\n"
   end
 end

@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'find'
+require 'open3'
 require_relative '../wildcat_constants'
 
 module WildcatUtils
@@ -34,6 +35,11 @@ module WildcatUtils
   def WildcatUtils.file_equals_string?(path, text)
     file_text = WildcatUtils.read_text_file(path)
     file_text.strip == text.strip
+  end
+
+  def WildcatUtils.rsync_local(source, dest)
+    FileUtils.mkdir_p(File.dirname(dest))
+    Open3.popen3("rsync", "-azu", source, dest)[1].read
   end
 
   def WildcatUtils.files_in_folder(folder)
