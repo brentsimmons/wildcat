@@ -10,18 +10,21 @@ class Blog
 
   def initialize(settings)
     @settings = settings
+    @posts = all_blog_posts_reverse_sorted_by_date
   end
 
   def build
-
-    @posts = all_blog_posts_reverse_sorted_by_date
-
     blog_archive = BlogArchive.new(@settings, @posts)
     blog_archive.build
 
     build_home_page
     build_json_feed
     build_rss_feed
+  end
+
+  def recent_posts(count)
+    last_post_index = count - 1
+    @posts[0..last_post_index]
   end
 
   private
@@ -73,10 +76,5 @@ class Blog
 
   def posts_for_home_page
     recent_posts(@settings.blog_number_of_posts)
-  end
-
-  def recent_posts(count)
-    last_post_index = count - 1
-    @posts[0..last_post_index]
   end
 end

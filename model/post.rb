@@ -6,6 +6,7 @@ class Post
 
   attr_reader :title
   attr_reader :content_html
+  attr_reader :source_text
   attr_reader :permalink
   attr_reader :external_url
   attr_reader :pub_date
@@ -15,16 +16,17 @@ class Post
   def initialize(settings, wildcat_file)
     @settings = settings
     @source_path = wildcat_file.path
+    @source_text = wildcat_file.text
     @destination_path, @permalink = WildcatUtils.paths(@source_path, @settings.posts_folder, @settings.blog_output_folder, @settings.site_url, @settings.output_file_suffix)
     @attributes = wildcat_file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]
-    
+
     @content_html = wildcat_file.to_html
     if !@content_html.start_with?('<p>')
     	@content_html = '<p>' + content_html
     end
-    
+
     @pub_date = @attributes[PUB_DATE_KEY]
     @rendered_html_including_link = nil
     @rendered_html = nil

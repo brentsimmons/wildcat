@@ -4,8 +4,13 @@ require_relative '../utilities/wildcat_utils'
 
 class Website
 
+  attr_reader :blog
+
   def initialize(settings)
     @settings = settings
+    if @settings.has_blog
+      @blog = Blog.new(@settings)
+    end
   end
 
   def build
@@ -13,8 +18,7 @@ class Website
     build_pages
 
     if @settings.has_blog
-      blog = Blog.new(@settings)
-      blog.build
+      @blog.build
     end
 
     copy_files

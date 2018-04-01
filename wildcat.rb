@@ -4,17 +4,28 @@ require_relative 'model/website_settings'
 require_relative 'model/website'
 require_relative 'utilities/wildcat_utils'
 
+DEFAULT_SETTINGS_FILE_NAME = 'wildcat_settings'
+
 class Wildcat
 
+  attr_reader :website
+
   def initialize(project_folder, settings_file_name)
-    settings_file_path = File.join(project_folder, settings_file_name)
-    @settings = WebsiteSettings.new(project_folder, settings_file_path)
-    @website = Website.new(@settings)
+    settings = Wildcat.settings_with_file_name(project_folder, settings_file_name)
+    @website = Website.new(settings)
   end
 
   def build
     @website.build
     perform_rsync_if_needed
+  end
+
+  def Wildcat.settings_with_file_name(project_folder, file_name)
+    if settings_file_name.nil? || settings_file_name.empty?
+      settings_file_name = DEFAULT_SETTINGS_FILE_NAME
+    end
+    settings_file_path = File.join(project_folder, settings_file_name)
+    WebsiteSettings.new(project_folder, settings_file_path)
   end
 
   private
@@ -41,7 +52,7 @@ end
 # For instance, I use pi — “Publish Inessential” — as an alias like this:
 # pushd "/Users/brent/path/to/inessential.com";ruby wildcat.rb;popd
 
-settings_file = 'wildcat_settings'
+settings_file = nil
 next_argument_is_settings = false
 found_alternate_settings_file = false
 
