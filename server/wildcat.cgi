@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby -wKU
+
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
 # This means no API for deleting a post. You have to delete posts manually.
@@ -18,16 +20,17 @@ require_relative '../utilities/wildcat_utils'
 
 class MetaWeblogCommand
 
-  TITLE_KEY = 'title'
-  LINK_KEY = 'link'
-  POSTID_KEY = 'postid'
-  PERMALINK_KEY = 'permaLink'
-  DESCRIPTION_KEY = 'description'
-  DATE_CREATED_KEY = 'dateCreated'
-  ENCLOSURE_STRUCT_KEY = 'enclosure'
-  ENCLOSURE_LENGTH_KEY = 'length'
-  ENCLOSURE_TYPE_KEY = 'type'
-  ENCLOSURE_URL_KEY = 'url'
+  METAWEBLOG_TITLE_KEY = 'title'
+  METAWEBLOG_LINK_KEY = 'link'
+  METAWEBLOG_POSTID_KEY = 'postid'
+  METAWEBLOG_PERMALINK_KEY = 'permaLink'
+  METAWEBLOG_DESCRIPTION_KEY = 'description'
+  METAWEBLOG_DATE_CREATED_KEY = 'dateCreated'
+  METAWEBLOG_DATE_MODIFIED_KEY = 'modDate'
+  METAWEBLOG_ENCLOSURE_STRUCT_KEY = 'enclosure'
+  METAWEBLOG_ENCLOSURE_LENGTH_KEY = 'length'
+  METAWEBLOG_ENCLOSURE_TYPE_KEY = 'type'
+  METAWEBLOG_ENCLOSURE_URL_KEY = 'url'
 
   EXCEPTION_MESSAGE_LOGIN_INVALID = 'Invalid login'
   EXCEPTION_CODE_LOGIN_INVALID = 0
@@ -49,19 +52,19 @@ class MetaWeblogCommand
 
   def recent_posts(number_of_posts)
     posts = @wildcat.website.blog.recent_posts(number_of_posts)
-    posts.map { |post| hash_for_post(blog_id, post) }
+    posts.map { |post| struct_for_post(blog_id, post) }
   end
 
   def get_post(post_id)
     unused, relative_path = MetaWeblogCommand.split_post_id(post_id)
     path = File.join(@wildcat.settings.posts_folder, relative_path)
     post = Post.new(@wildcat.settings, path)
-    hash_for_post(post)
+    struct_for_post(post)
   end
 
   def new_post(struct)
-    title = struct[TITLE_KEY]
-    description = struct[DESCRIPTION_KEY]
+    title = struct[METAWEBLOG_TITLE_KEY]
+    description = struct[METAWEBLOG_DESCRIPTION_KEY]
     file_name = file_name_for_new_post(title, description)
     relative_folder_path = relative_folder_path_with_date(Time.now)
     relative_path = File.join(relative_folder_path, file_name)
@@ -104,14 +107,15 @@ class MetaWeblogCommand
     @blog_id + ':' + relative_path
   end
 
-  def hash_for_post(post)
+  def struct_for_post(post)
     h = {}
-    h[POSTID_KEY] = create_post_id(@blog_id, post)
-    h[DESCRIPTION_KEY] = post.source_text
-    h[DATE_CREATED_KEY] = post.pubDate
-    h[PERMALINK_KEY] = post.permalink
-    h[TITLE_KEY] = post.title unless post.title.nil? || post.title.empty?
-    h[LINK_KEY] = post.external_url unless post.external_url.nil? || post.external_url.empty?
+    h[METAWEBLOG_POSTID_KEY] = create_post_id(@blog_id, post)
+    h[METAWEBLOG_DESCRIPTION_KEY] = post.source_text
+    h[METAWEBLOG_DATE_CREATED_KEY] = post.pub_date
+    h[METAWEBLOG_PERMALINK_KEY] = post.permalink
+    h[METAWEBLOG_DATE_MODIFIED_KEY] = post.mod_date unless post.mod_date.nil?
+    h[METAWEBLOG_TITLE_KEY] = post.title unless post.title.nil? || post.title.empty?
+    h[METAWEBLOG_LINK_KEY] = post.external_url unless post.external_url.nil? || post.external_url.empty?
     # TODO: enclosures
     h
   end
@@ -154,6 +158,34 @@ class MetaWeblogCommand
 
   def relative_folder_path_with_date(date)
     date.strftime("%Y/%m/%d/")
+  end
+  
+  def post_text_with_struct(struct)
+    s = ""
+    push(s, TITLE_KEY, struct[METAWEBLOG_TITLE_KEY])
+    push(s, LINK_KEY, struct[METAWEBLOG_LINK_KEY])
+    
+    d = Time.now
+    pub_date = struct.fetch(METAWEBLOG_DATE_CREATED_KEY, d)
+    mod_date = struct.fetch(METAWEBLOG_DATE_MODIFIED_KEY, d)
+    push(s, PUB_DATE_KEY, pub_date)
+    push(s, MOD_DATE_KEY, mod_date)
+    
+    s += struct[METAWEBLOG_DESCRIPTION_KEY].chomp
+    return s
+  end
+  
+  def att_line(key, value)
+		"@#{key} #{value}\n"
+  end
+  
+  def att_line_unless_empty(key, value)
+  	if value.nil? || value.empty? then return '' end
+  	att_line(key, value)
+  end
+  
+  def push(s, key, value)
+  	s += att_line_unless_empty(key, value)
   end
 end
 

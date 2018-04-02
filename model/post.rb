@@ -10,6 +10,7 @@ class Post
   attr_reader :permalink
   attr_reader :external_url
   attr_reader :pub_date
+  attr_reader :mod_date
   attr_reader :enclosure
   attr_reader :destination_path # path to permalink version
 
@@ -28,6 +29,7 @@ class Post
     end
 
     @pub_date = @attributes[PUB_DATE_KEY]
+    @mod_date = @attributes[MOD_DATE_KEY]
     @rendered_html_including_link = nil
     @rendered_html = nil
 
