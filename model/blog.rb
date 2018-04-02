@@ -10,11 +10,11 @@ class Blog
 
   def initialize(settings)
     @settings = settings
-    @posts = all_blog_posts_reverse_sorted_by_date
+    @cached_posts = nil
   end
 
   def build
-    blog_archive = BlogArchive.new(@settings, @posts)
+    blog_archive = BlogArchive.new(@settings, posts)
     blog_archive.build
 
     build_home_page
@@ -24,7 +24,14 @@ class Blog
 
   def recent_posts(count)
     last_post_index = count - 1
-    @posts[0..last_post_index]
+    posts[0..last_post_index]
+  end
+
+  def posts
+    if @cached_posts.nil?
+      @cached_posts = all_blog_posts_reverse_sorted_by_date
+    end
+    @cached_posts
   end
 
   private

@@ -15,30 +15,7 @@ require_relative '../utilities/wildcat_file'
 # Error handling is via exceptions.
 # Not my preferred thing, but it works well with XML-RPC.
 
-class PostSpecifier
-
-  attr_reader :blog_id
-  attr_reader :relative_path
-
-  def initialize(post_id)
-    components = post_id.split(':')
-    @blog_id = components[0]
-    @relative_path = components[1]
-    project_folder = BlogAPIHelper.folder_for_website(blog_id)
-    @settings = Wildcat.settings_with_file_name(project_folder, nil)
-    @path = File.join(@settings.posts_folder, @relative_path)
-  end
-
-  def wildcat_file
-    WildcatFile.new(@path)
-  end
-
-  def post
-    Post.new(@settings, wildcat_file)
-  end
-end
-
-module BlogAPIHelper
+class MetaWeblogCommand
 
   TITLE_KEY = 'title'
   LINK_KEY = 'link'
@@ -51,8 +28,6 @@ module BlogAPIHelper
   ENCLOSURE_TYPE_KEY = 'type'
   ENCLOSURE_URL_KEY = 'url'
 
-  ENV_KEY_WEBSITES_FOLDER = 'WILDCAT_WEBSITES_FOLDER'
-
   EXCEPTION_MESSAGE_LOGIN_INVALID = 'Invalid login'
   EXCEPTION_CODE_LOGIN_INVALID = 0
   EXCEPTION_MESSAGE_CANT_FIND_WEBSITES_FOLDER = 'Can’t find websites folder'
@@ -62,14 +37,62 @@ module BlogAPIHelper
   EXCEPTION_MESSAGE_CANT_FIND_POST = 'Can’t find post'
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
-  def BlogAPIHelper.check_auth(username, password)
-
-    BlogAPIHelper.raise_xmlrpc_exception(EXCEPTION_MESSAGE_LOGIN_INVALID, EXCEPTION_CODE_LOGIN_INVALID)
+  def initialize(username, password, blog_id)
+    # TODO: authenticate
+    raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_LOGIN_INVALID, EXCEPTION_CODE_LOGIN_INVALID)
+    @blog_id = blog_id
+    @wildcat = wildcat
   end
 
-  def BlogAPIHelper.hash_for_post(blog_id, post)
+  # API
+
+  def recent_posts(number_of_posts)
+    posts = @wildcat.website.blog.recent_posts(number_of_posts)
+    posts.map { |post| hash_for_post(blog_id, post) }
+  end
+
+  def get_post(post_id)
+    blog_id, relative_path = split_post_id(post_id)
+    wildcat = wildcat_with_blog_id(blog_id)
+    hash_for_post(post_specifier.blog_id, post_specifier.post)
+  end
+
+  def new_post(struct)
+
+  end
+
+  def edit_post(post_id, struct)
+
+  end
+
+  def get_categories
+    # Wildcat doesn’t support categories.
+    {}
+  end
+
+  def new_media_object(blog_id, struct)
+    # TODO: support this.
+    raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_UNIMPLEMENTED, EXCEPTION_CODE_UNIMPLEMENTED)
+  end
+
+  # Utility
+
+  def MetaWeblogCommand.split_post_id(post_id)
+    components = post_id.split(':')
+    blog_id = components[0]
+    relative_path = components[1]
+    return blog_id, relative_path
+  end
+
+  private
+
+  def create_post_id(blog_id, post)
+    blog_id + ':' + post.relative_path
+  end
+
+  def hash_for_post(post)
     h = {}
-    h[POSTID_KEY] = BlogAPIHelper.post_id(blog_id, post)
+    h[POSTID_KEY] = create_post_id(@blog_id, post)
     h[DESCRIPTION_KEY] = post.source_text
     h[DATE_CREATED_KEY] = post.pubDate
     h[PERMALINK_KEY] = post.permalink
@@ -78,89 +101,26 @@ module BlogAPIHelper
     h
   end
 
-  def BlogAPIHelper.post_id(blog_id, post)
-    blog_id + ':' + post.relative_path
-  end
-
-  def BlogAPIHelper.project_folder_with_blog_id(blog_id)
-
-    if blog_id.include? '..'
-      BlogAPIHelper.raise_cant_find_websites_folder
+  def wildcat
+    if @blog_id.nil? || @blog_id.empty? || @blog_id.include? '..'
+      raise_cant_find_websites_folder
     end
 
     websites_folder = ENV[ENV_KEY_WEBSITES_FOLDER]
     if websites_folder.nil? || websites_folder.empty?
-      BlogAPIHelper.raise_cant_find_websites_folder
+      raise_cant_find_websites_folder
     end
 
-    File.join(websites_folder, blog_id)
+    project_folder = File.join(websites_folder, @blog_id)
+    Wildcat.new(project_folder, nil)
   end
 
-  def path_for_post(post_id)
-
-  end
-
-  def BlogAPIHelper.blog_id_from_post_id(post_id)
-
-  end
-
-  def BlogAPIHelper.add_post(blog_id, post_struct)
-  end
-
-  def BlogAPIHelper.raise_unimplemented
-    BlogAPIHelper.raise_xmlrpc_exception(EXCEPTION_MESSAGE_UNIMPLEMENTED, EXCEPTION_CODE_UNIMPLEMENTED)
-  end
-
-  def BlogAPIHelper.raise_cant_find_websites_folder
-    BlogAPIHelper.raise_xmlrpc_exception(EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER, EXCEPTION_MESSAGE_CANT_FIND_WEBSITES_FOLDER)
-  end
-
-  def BlogAPIHelper.raise_xmlrpc_exception(message, code)
-    raise XMLRPC::FaultException.new(message, code)
-  end
-end
-
-module MetaWeblogCommand
-
-  def MetaWeblogCommand.recent_posts(blog_id, number_of_posts)
-    project_folder = BlogAPIHelper.project_folder_with_blog_id(blog_id)
-    wildcat = Wildcat.new(project_folder, nil)
-    posts = wildcat.website.blog.recent_posts(number_of_posts)
-    posts.map { |post| BlogAPIHelper.hash_for_post(blog_id, post) }
-  end
-
-  def MetaWeblogCommand.get_post(post_id)
-    post_specifier = PostSpecifier.new(post_id)
-    BlogAPIHelper.hash_for_post(post_specifier.blog_id, post_specifier.post)
-  end
-
-  def MetaWeblogCommand.new_post(blog_id, struct)
-
-  end
-
-  def MetaWeblogCommand.edit_post(post_id, struct)
-
+  def raise_cant_find_websites_folder
+    raise XMLRPC::FaultException.new(EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER, EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER)
   end
 end
 
 
-# Old code for reference.
-# class WeblogAPIUtilities
-#
-#   def self.splitPostID(postID)
-#     postIDArray = postID.split(":")
-#     blogID = postIDArray[0]
-#     blogFolder = WeblogAPIUtilities.folderForBlogID(blogID)
-#     website = Website.new(blogFolder, false)
-#     filePath = blogFolder + postIDArray[1]
-#     h = Hash.new()
-#     h["blogID"] = blogID
-#     h["blogFolder"] = blogFolder
-#     h["website"] = website
-#     h["filePath"] = filePath
-#     return h
-#   end
-#
 #   def self.rawTextWithStruct(h)
 #     s = String.new()
 #     s += ExportUtils.attLine(h["title"], "title")
@@ -210,38 +170,37 @@ end
 class MetaWeblogAPI
 
   def getRecentPosts(blog_id, username, password, number_of_posts)
-    BlogAPIHelper.check_auth(username, password)
-    MetaWeblogCommand.recent_posts(blog_id, number_of_posts)
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.recent_posts(number_of_posts)
   end
 
   def getCategories(blog_id, username, password)
     # Wildcat doesn’t support categories, but this shouldn’t be seen as an error.
-    BlogAPIHelper.check_auth(username, password)
-    {}
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.get_categories
   end
 
   def getPost(post_id, username, password)
-    BlogAPIHelper.check_auth(username, password)
-    MetaWeblogCommand.get_post(post_id)
+    blog_id, unused = MetaWeblogCommand.split_post_id(post_id)
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.get_post(post_id)
   end
 
   def newPost(blog_id, username, password, struct, publish)
-    # The publish parameter is ignored.
-    BlogAPIHelper.check_auth(username, password)
-    MetaWeblogCommand.new_post(blog_id, struct)
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.new_post(struct) # The publish parameter is ignored.
   end
 
   def editPost(post_id, username, password, struct, publish)
-    # The publish parameter is ignored.
-    BlogAPIHelper.check_auth(username, password)
-    MetaWeblogCommand.edit_post(post_id, struct)
+    blog_id, unused = MetaWeblogCommand.split_post_id(post_id)
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.edit_post(post_id, struct) # The publish parameter is ignored.
     return true
   end
 
   def newMediaObject(blog_id, username, password, struct)
-    # Wildcat doesn’t support this yet.
-    BlogAPIHelper.check_auth(username, password)
-    BlogAPIHelper.raise_unimplemented
+    command = MetaWeblogCommand.new(username, password, blog_id)
+    command.new_media_object(struct)
   end
 end
 
