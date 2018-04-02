@@ -1,10 +1,3 @@
-require 'xmlrpc/server'
-require_relative '../wildcat'
-require_relative '../model/website'
-require_relative '../model/blog'
-require_relative '../model/post'
-require_relative '../utilities/wildcat_file'
-
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
 # This means no API for deleting a post. You have to delete posts manually.
@@ -14,6 +7,14 @@ require_relative '../utilities/wildcat_file'
 #
 # Error handling is via exceptions.
 # Not my preferred thing, but it works well with XML-RPC.
+
+require 'xmlrpc/server'
+require_relative '../wildcat'
+require_relative '../model/website'
+require_relative '../model/blog'
+require_relative '../model/post'
+require_relative '../utilities/wildcat_file'
+require_relative '../utilities/wildcat_utils'
 
 class MetaWeblogCommand
 
@@ -52,13 +53,22 @@ class MetaWeblogCommand
   end
 
   def get_post(post_id)
-    blog_id, relative_path = split_post_id(post_id)
-    wildcat = wildcat_with_blog_id(blog_id)
-    hash_for_post(post_specifier.blog_id, post_specifier.post)
+    unused, relative_path = MetaWeblogCommand.split_post_id(post_id)
+    path = File.join(@wildcat.settings.posts_folder, relative_path)
+    post = Post.new(@wildcat.settings, path)
+    hash_for_post(post)
   end
 
   def new_post(struct)
-
+    title = struct[TITLE_KEY]
+    description = struct[DESCRIPTION_KEY]
+    file_name = file_name_for_new_post(title, description)
+    relative_folder_path = relative_folder_path_with_date(Time.now)
+    relative_path = File.join(relative_folder_path, file_name)
+    path = File.join(@wildcat.settings.posts_folder, relative_path)
+    text = post_text_with_struct(struct)
+    WildcatUtils.write_file_if_different(path, text)
+    post_id_with_relative_path(relative_path)
   end
 
   def edit_post(post_id, struct)
@@ -86,8 +96,12 @@ class MetaWeblogCommand
 
   private
 
-  def create_post_id(blog_id, post)
-    blog_id + ':' + post.relative_path
+  def create_post_id(post)
+    post_id_with_relative_path(post.relative_path)
+  end
+
+  def post_id_with_relative_path(relative_path)
+    @blog_id + ':' + relative_path
   end
 
   def hash_for_post(post)
@@ -98,6 +112,7 @@ class MetaWeblogCommand
     h[PERMALINK_KEY] = post.permalink
     h[TITLE_KEY] = post.title unless post.title.nil? || post.title.empty?
     h[LINK_KEY] = post.external_url unless post.external_url.nil? || post.external_url.empty?
+    # TODO: enclosures
     h
   end
 
@@ -117,6 +132,28 @@ class MetaWeblogCommand
 
   def raise_cant_find_websites_folder
     raise XMLRPC::FaultException.new(EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER, EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER)
+  end
+
+  def file_name_for_new_post(title, description)
+    file_name = title.dup
+    if file_name.nil? || file_name.empty?
+      file_name = description.dup
+    end
+    file_name.chomp!
+    file_name.downcase!
+    file_name.gsub!(' ', '_')
+    file_name.gsub!(/\W/, '_')
+    while file_name.include('__')
+      file_name.gsub!('__', '_')
+    end
+    if file_name.length > 40
+      file_name = file_name[0, 40]
+    end
+    file_name + '.markdown'
+  end
+
+  def relative_folder_path_with_date(date)
+    date.strftime("%Y/%m/%d/")
   end
 end
 
@@ -142,19 +179,6 @@ end
 #     s += h["description"]
 #     return s
 #   end
-#
-#   def self.addPost(website, h)
-#     titleCopy = String.new(h["title"])
-#     filename = ExportUtils.baseFilenameWithTitle(titleCopy)
-#     filename += ".markdown"
-#     postsFolder = website.projectSubfolder("posts/")
-#     newPostFolder = postsFolder + ExportUtils.relativeFolderWithDate(Time.now())
-#     filePath = newPostFolder + filename
-#     rawText = rawTextWithStruct(h)
-#     ExportUtils.writeFileToDisk(rawText, filePath)
-#     return WeblogPost.new(website, filePath)
-#   end
-#
 #   def self.editPost(website, filePath, h)
 #     if !FileTest.exist?(filePath)
 #       raise XMLRPC::FaultException.new(0, "post doesn’t exist")

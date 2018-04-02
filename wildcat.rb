@@ -9,9 +9,10 @@ DEFAULT_SETTINGS_FILE_NAME = 'wildcat_settings'
 class Wildcat
 
   attr_reader :website
+  attr_reader :settings
 
   def initialize(project_folder, settings_file_name)
-    settings = Wildcat.settings_with_file_name(project_folder, settings_file_name)
+    @settings = Wildcat.settings_with_file_name(project_folder, settings_file_name)
     @website = Website.new(settings)
   end
 
@@ -31,7 +32,6 @@ class Wildcat
   private
 
   def perform_rsync_if_needed
-
     rsync_path = @settings.rsync_remote_path
     if rsync_path.nil? || rsync_path.empty? then return end
     puts "Syncing to #{rsync_path}"
