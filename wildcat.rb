@@ -22,10 +22,10 @@ class Wildcat
   end
 
   def Wildcat.settings_with_file_name(project_folder, file_name)
-    if settings_file_name.nil? || settings_file_name.empty?
-      settings_file_name = DEFAULT_SETTINGS_FILE_NAME
+    if file_name.nil? || file_name.empty?
+      file_name = DEFAULT_SETTINGS_FILE_NAME
     end
-    settings_file_path = File.join(project_folder, settings_file_name)
+    settings_file_path = File.join(project_folder, file_name)
     WebsiteSettings.new(project_folder, settings_file_path)
   end
 

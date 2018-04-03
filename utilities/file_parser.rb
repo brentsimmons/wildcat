@@ -4,6 +4,7 @@
 # Works for posts, pages, and wildcat_settings.
 
 require 'Time'
+require 'fileutils'
 
 module FileParser
 

@@ -56,7 +56,7 @@ class MetaWeblogCommand
   end
 
   def get_post(post_id)
-    unused, relative_path = MetaWeblogCommand.split_post_id(post_id)
+    _, relative_path = MetaWeblogCommand.split_post_id(post_id)
     path = File.join(@wildcat.settings.posts_folder, relative_path)
     post = Post.new(@wildcat.settings, path)
     struct_for_post(post)
@@ -121,7 +121,7 @@ class MetaWeblogCommand
   end
 
   def wildcat
-    if @blog_id.nil? || @blog_id.empty? || @blog_id.include? '..'
+    if @blog_id.nil? || @blog_id.empty? || @blog_id.include?('..')
       raise_cant_find_websites_folder
     end
 
@@ -189,28 +189,6 @@ class MetaWeblogCommand
   end
 end
 
-
-#   def self.rawTextWithStruct(h)
-#     s = String.new()
-#     s += ExportUtils.attLine(h["title"], "title")
-#     link = h["link"]
-#     if link != nil && link != ""
-#       s += ExportUtils.attLine(link, "link")
-#     end
-#     categories = h["categories"]
-#     if categories != nil && !categories.empty?()
-#       s += ExportUtils.attLine(categories.join(", "), "categoryArray")
-#     end
-#     d = Time.new()
-#     pubDate = h["pubDate"]
-#     if pubDate == nil then pubDate = d end
-#     modDate = h["modDate"]
-#     if modDate == nil then modDate = d end
-#     s += ExportUtils.attLine("#{pubDate}", "pubDate")
-#     s += ExportUtils.attLine("#{modDate}", "modDate")
-#     s += h["description"]
-#     return s
-#   end
 #   def self.editPost(website, filePath, h)
 #     if !FileTest.exist?(filePath)
 #       raise XMLRPC::FaultException.new(0, "post doesn’t exist")
@@ -237,7 +215,7 @@ class MetaWeblogAPI
   end
 
   def getPost(post_id, username, password)
-    blog_id, unused = MetaWeblogCommand.split_post_id(post_id)
+    blog_id, _ = MetaWeblogCommand.split_post_id(post_id)
     command = MetaWeblogCommand.new(username, password, blog_id)
     command.get_post(post_id)
   end
@@ -248,7 +226,7 @@ class MetaWeblogAPI
   end
 
   def editPost(post_id, username, password, struct, publish)
-    blog_id, unused = MetaWeblogCommand.split_post_id(post_id)
+    blog_id, _ = MetaWeblogCommand.split_post_id(post_id)
     command = MetaWeblogCommand.new(username, password, blog_id)
     command.edit_post(post_id, struct) # The publish parameter is ignored.
     return true
