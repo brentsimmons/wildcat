@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby -wU
 
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
@@ -43,7 +43,7 @@ class MetaWeblogCommand
 
   def initialize(username, password, blog_id)
     # TODO: authenticate
-    raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_LOGIN_INVALID, EXCEPTION_CODE_LOGIN_INVALID)
+   # raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_LOGIN_INVALID, EXCEPTION_CODE_LOGIN_INVALID)
     @blog_id = blog_id
     @wildcat = wildcat
   end
@@ -126,6 +126,7 @@ class MetaWeblogCommand
     end
 
     websites_folder = ENV[ENV_KEY_WEBSITES_FOLDER]
+    puts websites_folder
     if websites_folder.nil? || websites_folder.empty?
       raise_cant_find_websites_folder
     end
@@ -201,7 +202,7 @@ end
 #
 # end
 
-class MetaWeblogAPI
+class MetaWeblog
 
   def getRecentPosts(blog_id, username, password, number_of_posts)
     command = MetaWeblogCommand.new(username, password, blog_id)
@@ -239,5 +240,5 @@ class MetaWeblogAPI
 end
 
 s = XMLRPC::CGIServer.new()
-s.add_handler("metaWeblog", MetaWeblogAPI.new())
+s.add_handler("metaWeblog", MetaWeblog.new())
 s.serve()
