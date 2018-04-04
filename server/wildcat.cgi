@@ -34,16 +34,17 @@ class MetaWeblogCommand
 
   EXCEPTION_MESSAGE_LOGIN_INVALID = 'Invalid login'
   EXCEPTION_CODE_LOGIN_INVALID = 0
-  EXCEPTION_MESSAGE_CANT_FIND_WEBSITES_FOLDER = 'Can’t find websites folder'
+  EXCEPTION_MESSAGE_CANT_FIND_WEBSITES_FOLDER = "Can't find websites folder"
   EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER = 1
   EXCEPTION_MESSAGE_UNIMPLEMENTED = 'Unimplemented method'
   EXCEPTION_CODE_UNIMPLEMENTED = 2
-  EXCEPTION_MESSAGE_CANT_FIND_POST = 'Can’t find post'
+  EXCEPTION_MESSAGE_CANT_FIND_POST = "Can't find post"
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
+  ENV_KEY_WEBSITES_FOLDER = 'WILDCAT_WEBSITES_FOLDER'
+
   def initialize(username, password, blog_id)
-    # TODO: authenticate
-   # raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_LOGIN_INVALID, EXCEPTION_CODE_LOGIN_INVALID)
+    #raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
     @blog_id = blog_id
     @wildcat = wildcat
   end
@@ -80,12 +81,12 @@ class MetaWeblogCommand
 
   def get_categories
     # Wildcat doesn’t support categories.
-    {}
+    []
   end
 
   def new_media_object(blog_id, struct)
     # TODO: support this.
-    raise XMLRPC::FaultException.new(EXCEPTION_MESSAGE_UNIMPLEMENTED, EXCEPTION_CODE_UNIMPLEMENTED)
+    raise XMLRPC::FaultException.new(EXCEPTION_CODE_UNIMPLEMENTED, EXCEPTION_MESSAGE_UNIMPLEMENTED)
   end
 
   # Utility
@@ -136,7 +137,7 @@ class MetaWeblogCommand
   end
 
   def raise_cant_find_websites_folder
-    raise XMLRPC::FaultException.new(EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER, EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER)
+    raise XMLRPC::FaultException.new(EXCEPTION_CODE_CANT_FIND_WEBSITES_FOLDER, EXCEPTION_MESSAGE_CANT_FIND_WEBSITES_FOLDER)
   end
 
   def file_name_for_new_post(title, description)
@@ -160,31 +161,31 @@ class MetaWeblogCommand
   def relative_folder_path_with_date(date)
     date.strftime("%Y/%m/%d/")
   end
-  
+
   def post_text_with_struct(struct)
     s = ""
     push(s, TITLE_KEY, struct[METAWEBLOG_TITLE_KEY])
     push(s, LINK_KEY, struct[METAWEBLOG_LINK_KEY])
-    
+
     d = Time.now
     pub_date = struct.fetch(METAWEBLOG_DATE_CREATED_KEY, d)
     mod_date = struct.fetch(METAWEBLOG_DATE_MODIFIED_KEY, d)
     push(s, PUB_DATE_KEY, pub_date)
     push(s, MOD_DATE_KEY, mod_date)
-    
+
     s += struct[METAWEBLOG_DESCRIPTION_KEY].chomp
     return s
   end
-  
+
   def att_line(key, value)
 		"@#{key} #{value}\n"
   end
-  
+
   def att_line_unless_empty(key, value)
   	if value.nil? || value.empty? then return '' end
   	att_line(key, value)
   end
-  
+
   def push(s, key, value)
   	s += att_line_unless_empty(key, value)
   end
