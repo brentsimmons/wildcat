@@ -17,6 +17,7 @@ require_relative '../model/blog'
 require_relative '../model/post'
 require_relative '../utilities/wildcat_file'
 require_relative '../utilities/wildcat_utils'
+require_relative '../utilities/wildcat_auth'
 
 class MetaWeblogCommand
 
@@ -42,13 +43,24 @@ class MetaWeblogCommand
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
   ENV_KEY_WEBSITES_FOLDER = 'WILDCAT_WEBSITES_FOLDER'
-
+	ENV_KEY_USERNAME = 'WILDCAT_USERNAME'
+	ENV_KEY_HASHED_PASSWORD = 'WILDCAT_HASHED_PASSWORD'
+	
   def initialize(username, password, blog_id)
-    #raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
+  	stored_username = 
+		raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
     @blog_id = blog_id
     @wildcat = wildcat
   end
 
+	def self.authenticate(username, password)
+		stored_username = ENV[ENV_KEY_USERNAME]
+		if stored_username != username then return false end
+		hashed_password = ENV[ENV_KEY_HASHED_PASSWORD]
+		if hashed_password.nil? || hashed_password
+		
+	end
+	
   # API
 
   def recent_posts(number_of_posts)
