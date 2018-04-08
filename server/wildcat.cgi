@@ -87,7 +87,36 @@ class MetaWeblogCommand
   end
 
   def edit_post(post_id, struct)
+    _, relative_path = MetaWeblogCommand.split_post_id(post_id)
+    path = File.join(@wildcat.settings.posts_folder, relative_path)
+    if !FileTest.exist?(path)
+      raise XMLRPC::FaultException.new(EXCEPTION_CODE_CANT_FIND_POST, EXCEPTION_MESSAGE_CANT_FIND_POST)
+    end
 
+    wildcat_file = WildcatFile.new(path)
+    existing_attributes = wildcat_file.attributes
+
+    s = ''
+    title = struct[METAWEBLOG_TITLE_KEY]
+    s += att_line_unless_empty(TITLE_KEY, title)
+    link = struct[METAWEBLOG_LINK_KEY]
+    s += att_line_unless_empty(LINK_KEY, link)
+
+    d = Time.now
+    pub_date = existing_attributes[PUB_DATE_KEY]
+    mod_date = struct.fetch(METAWEBLOG_DATE_MODIFIED_KEY, d)
+    s += att_line(PUB_DATE_KEY, pub_date)
+    s += att_line(MOD_DATE_KEY, mod_date)
+
+    # Preserve existing attributes not specified in incoming struct.
+    existing_attributes.each do |key, value|
+      if key == TITLE_KEY || key == LINK_KEY || key == PUB_DATE_KEY || key == MOD_DATE_KEY then next end
+      s += att_line(key, value)
+    end
+
+    s += struct[METAWEBLOG_DESCRIPTION_KEY].chomp
+
+    WildcatUtils.write_file_if_different(path, s)
   end
 
   def get_categories
@@ -213,7 +242,7 @@ end
 #
 # end
 
-class MetaWeblog
+class MetaWeblogAPI
 
   def getRecentPosts(blog_id, username, password, number_of_posts)
     command = MetaWeblogCommand.new(username, password, blog_id)
@@ -233,14 +262,16 @@ class MetaWeblog
   end
 
   def newPost(blog_id, username, password, struct, publish)
+    # The publish parameter is ignored.
     command = MetaWeblogCommand.new(username, password, blog_id)
-    command.new_post(struct) # The publish parameter is ignored.
+    command.new_post(struct)
   end
 
   def editPost(post_id, username, password, struct, publish)
+    # The publish parameter is ignored.
     blog_id, _ = MetaWeblogCommand.split_post_id(post_id)
     command = MetaWeblogCommand.new(username, password, blog_id)
-    command.edit_post(post_id, struct) # The publish parameter is ignored.
+    command.edit_post(post_id, struct)
     return true
   end
 
@@ -251,5 +282,5 @@ class MetaWeblog
 end
 
 s = XMLRPC::CGIServer.new()
-s.add_handler("metaWeblog", MetaWeblog.new())
+s.add_handler("metaWeblog", MetaWeblogAPI.new())
 s.serve()

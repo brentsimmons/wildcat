@@ -8,14 +8,14 @@ require 'fileutils'
 
 module FileParser
 
-  def FileParser.attributes_and_text(path)
+  def self.attributes_and_text(path)
     text = read_whole_file(path)
     attributes = attributes_from_text(text)
     body = body_from_text(text)
     return attributes, body
   end
 
-  def FileParser.read_whole_file(path)
+  def self.read_whole_file(path)
     file = File.open(path, 'r:UTF-8')
     text = file.read
     file.close
@@ -24,7 +24,7 @@ module FileParser
 
   private
 
-  def FileParser.attributes_from_text(text)
+  def self.attributes_from_text(text)
 
     attributes = {}
 
@@ -40,7 +40,7 @@ module FileParser
     attributes
   end
 
-  def FileParser.body_from_text(text)
+  def self.body_from_text(text)
     # Remove @attributes.
     ix = text.index(/^[^@]/)
     if ix == nil then return "" end
@@ -48,7 +48,7 @@ module FileParser
     text
   end
 
-	def FileParser.key_value_with_line(line)
+	def self.key_value_with_line(line)
 		if line[0,1] != '@' then return nil, nil end
 
 		index_of_space = line.index(' ')
