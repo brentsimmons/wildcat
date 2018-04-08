@@ -18,6 +18,7 @@ require_relative '../model/post'
 require_relative '../utilities/wildcat_file'
 require_relative '../utilities/wildcat_utils'
 require_relative '../utilities/wildcat_auth'
+require_relative '../config.rb'
 
 class MetaWeblogCommand
 
@@ -43,16 +44,15 @@ class MetaWeblogCommand
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
   def initialize(username, password, blog_id)
-    if !MetaWeblogCommand.authenticate(username, password)
-      raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
-    end
+#     if !MetaWeblogCommand.authenticate(username, password)
+#       raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
+#     end
     @blog_id = blog_id
     @wildcat = wildcat
   end
 
 	def self.authenticate(username, password)
 		stored_username = ENV[ENV_KEY_USERNAME]
-		warn "foo #{ENV['LSCOLORS']}"
 		if stored_username.nil? || stored_username.empty? then return false end
 		if stored_username != username then return false end
 
@@ -92,7 +92,7 @@ class MetaWeblogCommand
 
   def get_categories
     # Wildcat doesn’t support categories.
-    []
+    nil
   end
 
   def new_media_object(blog_id, struct)
@@ -138,7 +138,6 @@ class MetaWeblogCommand
     end
 
     websites_folder = ENV[ENV_KEY_WEBSITES_FOLDER]
-    puts websites_folder
     if websites_folder.nil? || websites_folder.empty?
       raise_cant_find_websites_folder
     end

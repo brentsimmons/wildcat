@@ -16,7 +16,7 @@ module FileParser
   end
 
   def FileParser.read_whole_file(path)
-    file = File.open(path, 'r')
+    file = File.open(path, 'r:UTF-8')
     text = file.read
     file.close
     text

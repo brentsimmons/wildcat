@@ -20,13 +20,13 @@ module WildcatUtils
   end
 
   def WildcatUtils.write_text_file(path, text)
-    f = File.open(path, 'w')
+    f = File.open(path, 'w:UTF-8')
     f.puts(text)
     f.close()
   end
 
   def WildcatUtils.read_text_file(path)
-		file = File.open(path, 'r')
+		file = File.open(path, 'r:UTF-8')
 		text = file.read()
 		file.close()
 		text

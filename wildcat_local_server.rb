@@ -8,6 +8,7 @@
 # It implements the Blogger and MetaWeblog APIs.
 
 require 'webrick'
+require_relative 'config'
 
 server=WEBrick::HTTPServer.new(:Port => 9344, :DocumentRoot => File.join(Dir::pwd, "server/"))
 trap("INT"){ server.shutdown }

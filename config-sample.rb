@@ -3,7 +3,7 @@
 # Your config.rb should not be checked into your repo.
 # Note that the .gitignore in this repo ignores config.rb.
 
-require 'wildcat-constants'
+require_relative 'wildcat_constants'
 
 # This is the path to the folder that contains one or website — the source (Markdown files, etc.).
 
