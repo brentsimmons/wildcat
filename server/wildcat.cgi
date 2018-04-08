@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby -KU
 
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
@@ -151,15 +151,16 @@ class MetaWeblogCommand
   end
 
   def file_name_for_new_post(title, description)
-    file_name = title.dup
+    file_name = title
     if file_name.nil? || file_name.empty?
-      file_name = description.dup
+      file_name = description
     end
+    file_name = file_name.dup
     file_name.chomp!
     file_name.downcase!
     file_name.gsub!(' ', '_')
     file_name.gsub!(/\W/, '_')
-    while file_name.include('__')
+    while file_name.include?('__')
       file_name.gsub!('__', '_')
     end
     if file_name.length > 40
@@ -173,15 +174,18 @@ class MetaWeblogCommand
   end
 
   def post_text_with_struct(struct)
-    s = ""
-    push(s, TITLE_KEY, struct[METAWEBLOG_TITLE_KEY])
-    push(s, LINK_KEY, struct[METAWEBLOG_LINK_KEY])
+    s = ''
+
+    title = struct[METAWEBLOG_TITLE_KEY]
+    s += att_line_unless_empty(TITLE_KEY, title)
+    link = struct[METAWEBLOG_LINK_KEY]
+    s += att_line_unless_empty(LINK_KEY, link)
 
     d = Time.now
     pub_date = struct.fetch(METAWEBLOG_DATE_CREATED_KEY, d)
     mod_date = struct.fetch(METAWEBLOG_DATE_MODIFIED_KEY, d)
-    push(s, PUB_DATE_KEY, pub_date)
-    push(s, MOD_DATE_KEY, mod_date)
+    s += att_line(PUB_DATE_KEY, pub_date)
+    s += att_line(MOD_DATE_KEY, mod_date)
 
     s += struct[METAWEBLOG_DESCRIPTION_KEY].chomp
     return s
@@ -194,10 +198,6 @@ class MetaWeblogCommand
   def att_line_unless_empty(key, value)
   	if value.nil? || value.empty? then return '' end
   	att_line(key, value)
-  end
-
-  def push(s, key, value)
-  	s += att_line_unless_empty(key, value)
   end
 end
 

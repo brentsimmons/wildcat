@@ -5,6 +5,9 @@
 
 require_relative 'wildcat_constants'
 
+# Important to know in a couple places.
+ENV[ENV_KEY_RUNNING_AS_SERVER] = 'true'
+
 # This is the path to the folder that contains one or website — the source (Markdown files, etc.).
 
 ENV[ENV_KEY_WEBSITES_FOLDER] = '/path/to/websites/'

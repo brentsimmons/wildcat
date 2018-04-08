@@ -79,7 +79,7 @@ class Renderer
     result = @context[substitution]
     if result.nil?
       result = UNDEFINED_SUBSTITUTION
-      puts "Undefined substitution: #{substitution}"
+      WildcatUtils.print_to_console("Undefined substitution: #{substitution}")
     end
     text[ix, (ix_end + END_SUBSTITUTION_CHARACTERS_COUNT) - ix] = result
   end

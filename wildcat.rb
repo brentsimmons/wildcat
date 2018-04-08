@@ -2,7 +2,6 @@
 
 require_relative 'model/website_settings'
 require_relative 'model/website'
-require_relative 'utilities/wildcat_utils'
 
 DEFAULT_SETTINGS_FILE_NAME = 'wildcat_settings'
 
@@ -34,7 +33,6 @@ class Wildcat
   def perform_rsync_if_needed
     rsync_path = @settings.rsync_remote_path
     if rsync_path.nil? || rsync_path.empty? then return end
-    puts "Syncing to #{rsync_path}"
     WildcatUtils.rsync_remote(@settings.output_folder, rsync_path)
   end
 end

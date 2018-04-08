@@ -39,8 +39,13 @@ class BlogArchive
   end
 
   def build_single_post_page(post)
+    title = post.title
+    if title.nil? || title.empty?
+      title = post.pub_date.strftime("%d %b %Y %H:%M:%S %z")
+    end
+
     context = {}
-    context[CONTEXT_TITLE_KEY] = post.title
+    context[CONTEXT_TITLE_KEY] = title
     context[CONTEXT_CONTENT_HTML_KEY] = post.to_html(false) # not including permalink
     PageBuilder.build(@settings, 'archive_single_post', context, post.destination_path)
   end
