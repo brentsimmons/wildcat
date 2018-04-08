@@ -73,7 +73,7 @@ module WildcatUtils
     file_paths.select { |path| file_is_text_source_file?(path) }
   end
 
-  def WildcatUtils.paths(path, input_folder, output_folder, site_url, output_file_suffix)
+  def self.paths(path, input_folder, output_folder, site_url, output_file_suffix)
 
     # Return destination file path *and* permalink.
 
@@ -86,7 +86,7 @@ module WildcatUtils
     permalink = File.join(site_url, relative_path)
     permalink = change_source_suffix_to_output_suffix(permalink, output_file_suffix)
 
-    return destination_path, permalink
+    return destination_path, permalink, relative_path
   end
 
   def WildcatUtils.change_source_suffix_to_output_suffix(path, output_suffix)

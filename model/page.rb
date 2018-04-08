@@ -22,7 +22,7 @@ class Page
   def initialize(settings, wildcat_file)
     @path = wildcat_file.path
     @settings = settings
-    @output_path, @permalink = WildcatUtils.paths(@path, settings.pages_folder, settings.output_folder, settings.site_url, settings.output_file_suffix)
+    @output_path, @permalink, _ = WildcatUtils.paths(@path, settings.pages_folder, settings.output_folder, settings.site_url, settings.output_file_suffix)
     @content_html = wildcat_file.to_html
     @title = wildcat_file.attributes[TITLE_KEY]
     @pub_date = wildcat_file.attributes[PUB_DATE_KEY]

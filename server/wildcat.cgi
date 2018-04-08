@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wU
+#!/usr/bin/env ruby -wKU
 
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
@@ -64,12 +64,7 @@ class MetaWeblogCommand
 
   def recent_posts(number_of_posts)
     posts = @wildcat.website.blog.recent_posts(number_of_posts)
-    warn 'posts'
-    warn posts
-    post_structs = posts.map { |post| struct_for_post(post) }
-    warn 'post_structs'
-    warn post_structs
-    post_structs
+    posts.map { |post| struct_for_post(post) }
   end
 
   def get_post(post_id)

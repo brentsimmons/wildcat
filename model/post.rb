@@ -13,12 +13,13 @@ class Post
   attr_reader :mod_date
   attr_reader :enclosure
   attr_reader :destination_path # path to permalink version
+  attr_reader :relative_path # relative path to source file (with .html or .markdown extension)
 
   def initialize(settings, wildcat_file)
     @settings = settings
     @source_path = wildcat_file.path
     @source_text = wildcat_file.text
-    @destination_path, @permalink = WildcatUtils.paths(@source_path, @settings.posts_folder, @settings.blog_output_folder, @settings.site_url, @settings.output_file_suffix)
+    @destination_path, @permalink, @relative_path = WildcatUtils.paths(@source_path, @settings.posts_folder, @settings.blog_output_folder, @settings.site_url, @settings.output_file_suffix)
     @attributes = wildcat_file.attributes
     @external_url = @attributes[LINK_KEY]
     @title = @attributes[TITLE_KEY]
