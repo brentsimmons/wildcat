@@ -16,13 +16,13 @@ class WildcatFile
   TEXT_TYPE_UNKNOWN = 'unknown'
 
   def initialize(path)
-    if cached_file = @@cache[path] then return cached_file end
+#     if cached_file = @@cache[path] then return cached_file end
 
     @path = path
     @text_type = text_type_from_path(path)
     @attributes, @text = FileParser.attributes_and_text(path)
     @rendered_text = ""
-    @@cache[path] = self
+#     @@cache[path] = self
   end
 
   def to_html

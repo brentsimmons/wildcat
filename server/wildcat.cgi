@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -KU
+#!/usr/bin/env ruby -wKU
 
 # Implements MetaWeblog API.
 # Does not implement Blogger API.
@@ -85,6 +85,8 @@ class MetaWeblogCommand
     text = post_text_with_struct(struct)
     WildcatUtils.write_file_if_different(path, text)
     post_id_with_relative_path(relative_path)
+
+    rebuild_site
   end
 
   def edit_post(post_id, struct)
@@ -118,6 +120,8 @@ class MetaWeblogCommand
     s += struct[METAWEBLOG_DESCRIPTION_KEY].chomp
 
     WildcatUtils.write_file_if_different(path, s)
+
+    rebuild_site
   end
 
   def get_categories
@@ -185,6 +189,7 @@ class MetaWeblogCommand
     if file_name.nil? || file_name.empty?
       file_name = description
     end
+
     file_name = file_name.dup
     file_name.chomp!
     file_name.downcase!
@@ -231,22 +236,9 @@ class MetaWeblogCommand
   end
 
   def rebuild_site
-    rebuilding_wildcat = wildcat
-    rebuilding_wildcat.build
+    @wildcat.build
   end
 end
-
-#   def self.editPost(website, filePath, h)
-#     if !FileTest.exist?(filePath)
-#       raise XMLRPC::FaultException.new(0, "post doesn’t exist")
-#     end
-#     existingWeblogPost = WeblogPost.new(website, filePath)
-#     h["pubDate"] = existingWeblogPost.atts["pubDate"]
-#     rawText = rawTextWithStruct(h)
-#     ExportUtils.writeFileToDisk(rawText, filePath)
-#   end
-#
-# end
 
 class MetaWeblogAPI
 
