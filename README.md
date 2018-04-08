@@ -8,7 +8,7 @@ It is designed to be run locally or on a server. It is designed to be fast.
 
 It can generate websites that *don’t* have a blog — for instance, you could use it to generate the help files for a Mac or iOS app. But its main use is for sites with a blog.
 
-It generates JSON Feed and RSS feeds as well as HTML pages. It supports the MetaWeblog API.
+It generates JSON Feed and RSS feeds as well as HTML pages. It supports the MetaWeblog API. It supports title-less blog posts, too, so you can use this is a microblogging system, if you want. Or as a hybrid — you can mix posts-with-titles and posts-without-titles.
 
 I’m not looking for pull requests yet. Some time in the future, possibly, although forking just may be the better way to go.
 
