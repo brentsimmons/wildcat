@@ -42,25 +42,24 @@ class MetaWeblogCommand
   EXCEPTION_MESSAGE_CANT_FIND_POST = "Can't find post"
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
-  ENV_KEY_WEBSITES_FOLDER = 'WILDCAT_WEBSITES_FOLDER'
-	ENV_KEY_USERNAME = 'WILDCAT_USERNAME'
-	ENV_KEY_HASHED_PASSWORD = 'WILDCAT_HASHED_PASSWORD'
-	
   def initialize(username, password, blog_id)
-  	stored_username = 
-		raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
+    if !MetaWeblogCommand.authenticate(username, password)
+      raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
+    end
     @blog_id = blog_id
     @wildcat = wildcat
   end
 
 	def self.authenticate(username, password)
 		stored_username = ENV[ENV_KEY_USERNAME]
+		warn "foo #{ENV['LSCOLORS']}"
+		if stored_username.nil? || stored_username.empty? then return false end
 		if stored_username != username then return false end
+
 		hashed_password = ENV[ENV_KEY_HASHED_PASSWORD]
-		if hashed_password.nil? || hashed_password
-		
+    WildcatAuth.verify_password(password, hashed_password)
 	end
-	
+
   # API
 
   def recent_posts(number_of_posts)
