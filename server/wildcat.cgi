@@ -70,7 +70,8 @@ class MetaWeblogCommand
   def get_post(post_id)
     _, relative_path = MetaWeblogCommand.split_post_id(post_id)
     path = File.join(@wildcat.settings.posts_folder, relative_path)
-    post = Post.new(@wildcat.settings, path)
+    wildcat_file = WildcatFile.new(path)
+    post = Post.new(@wildcat.settings, wildcat_file)
     struct_for_post(post)
   end
 
@@ -227,6 +228,11 @@ class MetaWeblogCommand
   def att_line_unless_empty(key, value)
   	if value.nil? || value.empty? then return '' end
   	att_line(key, value)
+  end
+
+  def rebuild_site
+    rebuilding_wildcat = wildcat
+    rebuilding_wildcat.build
   end
 end
 
