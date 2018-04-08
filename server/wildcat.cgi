@@ -44,11 +44,11 @@ class MetaWeblogCommand
   EXCEPTION_CODE_CANT_FIND_POST = 3
 
   def initialize(username, password, blog_id)
-#     if !MetaWeblogCommand.authenticate(username, password)
-#       raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
-#     end
+    if !MetaWeblogCommand.authenticate(username, password)
+      raise XMLRPC::FaultException.new(EXCEPTION_CODE_LOGIN_INVALID, EXCEPTION_MESSAGE_LOGIN_INVALID)
+    end
     @blog_id = blog_id
-    @wildcat = wildcat
+		@wildcat = wildcat
   end
 
 	def self.authenticate(username, password)
@@ -64,7 +64,12 @@ class MetaWeblogCommand
 
   def recent_posts(number_of_posts)
     posts = @wildcat.website.blog.recent_posts(number_of_posts)
-    posts.map { |post| struct_for_post(blog_id, post) }
+    warn 'posts'
+    warn posts
+    post_structs = posts.map { |post| struct_for_post(post) }
+    warn 'post_structs'
+    warn post_structs
+    post_structs
   end
 
   def get_post(post_id)
@@ -92,7 +97,7 @@ class MetaWeblogCommand
 
   def get_categories
     # Wildcat doesn’t support categories.
-    nil
+    []
   end
 
   def new_media_object(blog_id, struct)
@@ -121,7 +126,7 @@ class MetaWeblogCommand
 
   def struct_for_post(post)
     h = {}
-    h[METAWEBLOG_POSTID_KEY] = create_post_id(@blog_id, post)
+    h[METAWEBLOG_POSTID_KEY] = create_post_id(post)
     h[METAWEBLOG_DESCRIPTION_KEY] = post.source_text
     h[METAWEBLOG_DATE_CREATED_KEY] = post.pub_date
     h[METAWEBLOG_PERMALINK_KEY] = post.permalink
