@@ -8,9 +8,9 @@ It is designed to be run locally or on a server. It is designed to be fast.
 
 It can generate websites that *don’t* have a blog — for instance, you could use it to generate the help files for a Mac or iOS app. But its main use is for sites with a blog.
 
-It will generate JSON Feed and RSS feeds as well as HTML pages. It will support the MetaWeblog API and perhaps other similar APIs.
+It generates JSON Feed and RSS feeds as well as HTML pages. It supports the MetaWeblog API.
 
-I’m not looking for pull requests yet. Some time in the future, yes, absolutely.
+I’m not looking for pull requests yet. Some time in the future, possibly, although forking just may be the better way to go.
 
 Note: if the Ruby seems weird anywhere, please let me know. I’m a Swift and Objective-C developer trying to get good at Ruby, but realizing I have a long way to go. :)
 
@@ -44,9 +44,9 @@ The idea is that there are very few templates compared to the number of pages an
 
 ## Performance
 
-TBD
+It rebuilds the entire site on any change. It’s not fancy.
 
-(Say something about always just rebuilding the entire site — even the almost-20-year-old inessential.com — because it’s so fast.)
+But a rebuild for my [19-year-old blog](http://inessential.com/) takes about three seconds. It’s fast.
 
 ## How to run on a server
 
