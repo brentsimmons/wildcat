@@ -84,9 +84,11 @@ class MetaWeblogCommand
     path = File.join(@wildcat.settings.posts_folder, relative_path)
     text = post_text_with_struct(struct)
     WildcatUtils.write_file_if_different(path, text)
-    post_id_with_relative_path(relative_path)
+    new_post_id = post_id_with_relative_path(relative_path)
 
     rebuild_site
+    
+    new_post_id
   end
 
   def edit_post(post_id, struct)
@@ -122,6 +124,8 @@ class MetaWeblogCommand
     WildcatUtils.write_file_if_different(path, s)
 
     rebuild_site
+    
+    true
   end
 
   def get_categories
@@ -236,7 +240,12 @@ class MetaWeblogCommand
   end
 
   def rebuild_site
-    @wildcat.build
+  	pid = Process.fork
+  	if pid.nil? then
+  		@wildcat.build
+  	else
+  		Process.detach(pid)
+  	end
   end
 end
 
