@@ -197,6 +197,12 @@ class MetaWeblogCommand
     file_name = file_name.dup
     file_name.chomp!
     file_name.downcase!
+    file_name.gsub!("'", '')
+    file_name.gsub!('‘', '')
+    file_name.gsub!('’', '')
+    file_name.gsub!('"', '')
+    file_name.gsub!('“', '')
+    file_name.gsub!('”', '')
     file_name.gsub!(' ', '_')
     file_name.gsub!(/\W/, '_')
     while file_name.include?('__')
