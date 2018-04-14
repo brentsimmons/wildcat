@@ -4,6 +4,7 @@ class RSSFeed
   CHANNEL_TAG = 'channel'
   TITLE_TAG = 'title'
   DESCRIPTION_TAG = 'description'
+  LANGUAGE_TAG = 'language'
   ITEM_TAG = 'item'
   LINK_TAG = 'link'
   GUID_TAG = 'guid'
@@ -43,6 +44,7 @@ class RSSFeed
     push_tag_with_value(TITLE_TAG, @settings.feed_title)
     push_tag_with_value(DESCRIPTION_TAG, @settings.feed_description)
     push_tag_with_value(LINK_TAG, @settings.site_url)
+    push_tag_with_value(LANGUAGE_TAG, @settings.feed_language)
   end
 
   def add_posts

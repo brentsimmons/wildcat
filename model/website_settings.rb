@@ -68,6 +68,7 @@ class WebsiteSettings
   FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'
   FEED_TITLE_KEY = 'feed_title'
   FEED_DESCRIPTION_KEY = 'feed_description'
+  FEED_LANGUAGE_KEY = 'feed_language'
   FEED_AUTHOR_NAME_KEY = 'feed_author'
   FEED_AUTHOR_URL_KEY = 'feed_author_url'
   FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'
@@ -133,6 +134,7 @@ class WebsiteSettings
     @feed_number_of_posts = @attributes.fetch(FEED_NUMBER_OF_POSTS_KEY, 20)
     @feed_title = @attributes.fetch(FEED_TITLE_KEY, @site_name)
     @feed_description = @attributes[FEED_DESCRIPTION_KEY]
+    @feed_language = @attributes.fetch[FEED_LANGUAGE_KEY, 'en')
     @feed_author_name = @attributes[FEED_AUTHOR_NAME_KEY]
     @feed_author_url = @attributes[FEED_AUTHOR_URL_KEY]
     @feed_author_avatar_url = @attributes[FEED_AUTHOR_AVATAR_KEY]
