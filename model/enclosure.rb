@@ -24,7 +24,9 @@ class Enclosure
     json[JSON_FEED_ENCLOSURE_URL] = @url
 
     add_if_not_empty(json, JSON_FEED_ENCLOSURE_MIME_TYPE, @mime_type)
-    add_if_not_empty(json, JSON_FEED_ENCLOSURE_SIZE_IN_BYTES, @size_in_bytes)
+    if !@size_in_bytes.nil?
+      json[JSON_FEED_ENCLOSURE_SIZE_IN_BYTES] = @size_in_bytes.to_i
+    end
 
     json
   end
