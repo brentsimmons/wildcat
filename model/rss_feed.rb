@@ -33,7 +33,7 @@ class RSSFeed
 
   def add_header
     if @settings.feed_itunes_include
-      push_stand_alone_tag('rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"')
+      push_stand_alone_tag('rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/"')
     else
       push_stand_alone_tag('rss version="2.0"')
     end
@@ -42,6 +42,7 @@ class RSSFeed
     @indent_level += 1
     push_tag_with_value(TITLE_TAG, @settings.feed_title)
     push_tag_with_value(DESCRIPTION_TAG, @settings.feed_description)
+    push_tag_with_value(LINK_TAG, @settings.site_url)
   end
 
   def add_posts
