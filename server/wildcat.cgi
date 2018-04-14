@@ -87,7 +87,7 @@ class MetaWeblogCommand
     new_post_id = post_id_with_relative_path(relative_path)
 
     rebuild_site
-    
+
     new_post_id
   end
 
@@ -124,7 +124,7 @@ class MetaWeblogCommand
     WildcatUtils.write_file_if_different(path, s)
 
     rebuild_site
-    
+
     true
   end
 
@@ -205,6 +205,8 @@ class MetaWeblogCommand
     file_name.gsub!('”', '')
     file_name.gsub!(' ', '_')
     file_name.gsub!(/\W/, '_')
+    file_name.gsub!("a_href_https", '')
+    file_name.gsub!("a_href_http", '')
     while file_name.include?('__')
       file_name.gsub!('__', '_')
     end

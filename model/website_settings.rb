@@ -40,15 +40,6 @@ class WebsiteSettings
   attr_reader :feed_author_url
   attr_reader :feed_author_avatar_url
   attr_reader :feed_url
-  attr_reader :feed_itunes_include
-  attr_reader :feed_itunes_graphic_url
-  attr_reader :feed_itunes_author
-  attr_reader :feed_itunes_summary
-  attr_reader :feed_itunes_keywords
-  attr_reader :feed_itunes_explicit
-  attr_reader :feed_itunes_owner_name
-  attr_reader :feed_itunes_owner_email
-  attr_reader :feed_itunes_category
 
   SITE_NAME_KEY = 'site_name'
   SITE_URL_KEY = 'site_url'
@@ -68,19 +59,9 @@ class WebsiteSettings
   FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'
   FEED_TITLE_KEY = 'feed_title'
   FEED_DESCRIPTION_KEY = 'feed_description'
-  FEED_LANGUAGE_KEY = 'feed_language'
   FEED_AUTHOR_NAME_KEY = 'feed_author'
   FEED_AUTHOR_URL_KEY = 'feed_author_url'
   FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'
-  FEED_ITUNES_INCLUDE = 'feed_itunes_include'
-  FEED_ITUNES_GRAPHIC_URL = 'feed_itunes_graphic_url'
-  FEED_ITUNES_AUTHOR = 'feed_itunes_author'
-  FEED_ITUNES_SUMMARY = 'feed_itunes_summary'
-  FEED_ITUNES_KEYWORDS = 'feed_itunes_keywords'
-  FEED_ITUNES_EXPLICIT = 'feed_itunes_explicit'
-  FEED_ITUNES_OWNER_NAME = 'feed_itunes_owner_name'
-  FEED_ITUNES_OWNER_EMAIL = 'feed_itunes_owner_email'
-  FEED_ITUNES_CATEGORY = 'feed_itunes_category'
 
   FOLDER_NAME_POSTS = 'posts'
   FOLDER_NAME_PAGES = 'pages'
@@ -134,19 +115,9 @@ class WebsiteSettings
     @feed_number_of_posts = @attributes.fetch(FEED_NUMBER_OF_POSTS_KEY, 20)
     @feed_title = @attributes.fetch(FEED_TITLE_KEY, @site_name)
     @feed_description = @attributes[FEED_DESCRIPTION_KEY]
-    @feed_language = @attributes.fetch[FEED_LANGUAGE_KEY, 'en')
     @feed_author_name = @attributes[FEED_AUTHOR_NAME_KEY]
     @feed_author_url = @attributes[FEED_AUTHOR_URL_KEY]
     @feed_author_avatar_url = @attributes[FEED_AUTHOR_AVATAR_KEY]
-    @feed_itunes_include = @attributes[FEED_ITUNES_INCLUDE]
-    @feed_itunes_graphic_url = @attributes[FEED_ITUNES_GRAPHIC_URL]
-    @feed_itunes_author = @attributes[FEED_ITUNES_AUTHOR]
-    @feed_itunes_summary = @attributes[FEED_ITUNES_SUMMARY]
-    @feed_itunes_keywords = @attributes[FEED_ITUNES_KEYWORDS]
-    @feed_itunes_explicit = @attributes[FEED_ITUNES_EXPLICIT]
-    @feed_itunes_owner_name = @attributes[FEED_ITUNES_OWNER_NAME]
-    @feed_itunes_owner_email = @attributes[FEED_ITUNES_OWNER_EMAIL]
-    @feed_itunes_category = @attributes[FEED_ITUNES_CATEGORY]
 
     @feed_url = site_url + 'feed.json'
   end

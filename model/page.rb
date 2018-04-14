@@ -45,6 +45,6 @@ class Page
 
   def to_html
     renderer = Renderer.new(@settings, 'page', context)
-    renderer.to_html
+    renderer.to_s
   end
 end

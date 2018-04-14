@@ -138,6 +138,6 @@ class Post
   def render_with_template(template_name)
 
     renderer = Renderer.new(@settings, template_name, context)
-    renderer.to_html + "\n"
+    renderer.to_s + "\n"
   end
 end

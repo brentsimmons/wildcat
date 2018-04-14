@@ -29,7 +29,7 @@ class Renderer
     @html = @template_text.dup
   end
 
-  def to_html
+  def to_s
     process_snippets(@html)
     process_substitutions(@html)
     @html
@@ -38,7 +38,10 @@ class Renderer
   private
 
   def read_template(template_name)
-    path = File.join(@settings.templates_folder, template_name + '.html')
+    path = File.join(@settings.templates_folder, template_name)
+    if !FileTest.exist?(path)
+      path = File.join(@settings.templates_folder, template_name + '.html')
+    end
     WildcatUtils.read_text_file(path)
   end
 
