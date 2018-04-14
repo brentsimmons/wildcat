@@ -111,7 +111,12 @@ class RSSItem
     push_tag_with_value_if_not_empty('itunes:subtitle', @post.itunes_subtitle)
     push_tag_with_value_if_not_empty('itunes:summary', @post.itunes_summary)
     push_tag_with_value_if_not_empty('itunes:explicit', @post.itunes_explicit)
-    push_tag_with_value_if_not_empty('media:thumbnail', @post.itunes_media_thumbnail)
+
+    if @post.media_thumbnail.nil? || post.media_thumbnail.empty?
+      push_tag_with_value_if_not_empty('media:thumbnail', @settings.feed_media_thumbnail)
+    else
+      push_tag_with_value_if_not_empty('media:thumbnail', @post.media_thumbnail)
+    end
   end
 
   def push_attribute_if_not_empty(name, value)

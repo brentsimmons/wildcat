@@ -18,7 +18,7 @@ class Enclosure
 
   def to_json_feed_component
 
-    if url.nil? || url.is_empty? then return nil end
+    if url.nil? || url.empty? then return nil end
 
     json = {}
     json[JSON_FEED_ENCLOSURE_URL] = @url

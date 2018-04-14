@@ -12,6 +12,12 @@ class Post
   attr_reader :pub_date
   attr_reader :mod_date
   attr_reader :enclosure
+  attr_reader :itunes_duration
+  attr_reader :itunes_subtitle
+  attr_reader :itunes_summary
+  attr_reader :itunes_explicit
+  attr_reader :media_thumbnail
+
   attr_reader :destination_path # path to permalink version
   attr_reader :relative_path # relative path to source file (with .html or .markdown extension)
 
@@ -36,10 +42,16 @@ class Post
 
     enclosure_url = @attributes[ENCLOSURE_URL_KEY]
     if !enclosure_url.nil? && !enclosure_url.empty?
-      @enclosure = Enclosure(@attributes)
+      @enclosure = Enclosure.new(@attributes)
     else
       @enclosure = nil
     end
+
+    @itunes_duration = @attributes[ITUNES_DURATION_KEY]
+    @itunes_subtitle = @attributes[ITUNES_SUBTITLE_KEY]
+    @itunes_summary = @attributes[ITUNES_SUMMARY_KEY]
+    @itunes_explicit = @attributes[ITUNES_EXPLICIT_KEY]
+    @media_thumbnail = @attributes[MEDIA_THUMBNAIL_KEY]
 
   end
 

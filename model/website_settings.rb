@@ -40,6 +40,7 @@ class WebsiteSettings
   attr_reader :feed_author_url
   attr_reader :feed_author_avatar_url
   attr_reader :feed_url
+  attr_reader :feed_media_thumbnail
 
   SITE_NAME_KEY = 'site_name'
   SITE_URL_KEY = 'site_url'
@@ -62,6 +63,7 @@ class WebsiteSettings
   FEED_AUTHOR_NAME_KEY = 'feed_author'
   FEED_AUTHOR_URL_KEY = 'feed_author_url'
   FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'
+  FEED_MEDIA_THUMBNAIL_KEY = 'feed_media_thumbnail'
 
   FOLDER_NAME_POSTS = 'posts'
   FOLDER_NAME_PAGES = 'pages'
@@ -118,6 +120,7 @@ class WebsiteSettings
     @feed_author_name = @attributes[FEED_AUTHOR_NAME_KEY]
     @feed_author_url = @attributes[FEED_AUTHOR_URL_KEY]
     @feed_author_avatar_url = @attributes[FEED_AUTHOR_AVATAR_KEY]
+    @feed_media_thumbnail = @attributes[FEED_MEDIA_THUMBNAIL_KEY]
 
     @feed_url = site_url + 'feed.json'
   end

@@ -17,6 +17,11 @@ MOD_DATE_KEY = 'modDate'
 ENCLOSURE_URL_KEY = 'enclosure'
 ENCLOSURE_TYPE_KEY = 'enclosureType'
 ENCLOSURE_LENGTH_KEY = 'enclosureLength'
+ITUNES_DURATION_KEY = 'itunesDuration'
+ITUNES_SUBTITLE_KEY = 'itunesItemSubtitle'
+ITUNES_SUMMARY_KEY = 'itunesItemSummary'
+ITUNES_EXPLICIT_KEY = 'itunesExplicit'
+MEDIA_THUMBNAIL_KEY = 'mediaThumbnail'
 
 # These appear in context tables when rendering.
 
