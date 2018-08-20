@@ -24,7 +24,7 @@ At the top of each file is some attributes — lines that start with a `@` sign.
 
 Files are treated according to their suffixes: `.html` means not to process the text; `.markdown` means to use the Markdown renderer.
 
-(Wildcat requires the RDiscount gem for Markdown rendering.)
+(Wildcat requires the Kramdown gem for Markdown rendering.)
 
 ## Macros
 
@@ -54,4 +54,11 @@ TBD
 
 ## How to run locally
 
-TBD
+Install gem dependencies from `Gemfile`:
+
+```
+gem install bundler
+bundle install
+```
+
+**TBD**

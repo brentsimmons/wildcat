@@ -1,7 +1,7 @@
 # Contains the attributes, text, and text type of a file.
 # Could be a page, post, or settings file.
 
-require 'rdiscount'
+require 'kramdown'
 require_relative 'file_parser'
 require_relative '../wildcat_constants'
 
@@ -43,6 +43,15 @@ class WildcatFile
   end
 
   def render_text
-     @text_type == TEXT_TYPE_MARKDOWN ? RDiscount.new(@text).to_html : @text
+    if @text_type == TEXT_TYPE_MARKDOWN
+      Kramdown::Document.new(
+      MarkdownMedia.parse(@text),
+      input: :kramdown,
+      remove_block_html_tags: false,
+      transliterated_header_ids: true
+      ).to_html
+    else
+      @text
+    end
   end
 end
