@@ -45,10 +45,10 @@ class WildcatFile
   def render_text
     if @text_type == TEXT_TYPE_MARKDOWN
       Kramdown::Document.new(
-      @text,
-      input: :kramdown,
-      remove_block_html_tags: false,
-      transliterated_header_ids: true
+        @text,
+        input: :kramdown,
+        remove_block_html_tags: false,
+        transliterated_header_ids: true
       ).to_html
     else
       @text
