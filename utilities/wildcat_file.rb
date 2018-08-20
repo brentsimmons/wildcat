@@ -45,7 +45,7 @@ class WildcatFile
   def render_text
     if @text_type == TEXT_TYPE_MARKDOWN
       Kramdown::Document.new(
-      MarkdownMedia.parse(@text),
+      @text,
       input: :kramdown,
       remove_block_html_tags: false,
       transliterated_header_ids: true
