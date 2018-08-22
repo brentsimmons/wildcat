@@ -54,10 +54,6 @@ Style/ClassVars:
     - 'renderer/renderer.rb'
     - 'utilities/wildcat_file.rb'
 
-# Offense count: 19
-Style/Documentation:
-  Enabled: false
-
 # Offense count: 2
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: each, for
