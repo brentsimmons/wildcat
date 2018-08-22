@@ -85,12 +85,12 @@ class Renderer
       text[ix, (ix_end + END_SUBSTITUTION_CHARACTERS_COUNT) - ix] = result
     end
 
-    def indexes_of_characters(text, searchFor)
+    def indexes_of_characters(text, search_for)
       ix = 0
       indexes = []
 
       loop do
-        ix = text.index(searchFor, ix)
+        ix = text.index(search_for, ix)
         break if ix.nil?
         indexes << ix if ix.zero? || text[ix - 1, 1] != '\\' # escape char is \
         ix += 1
