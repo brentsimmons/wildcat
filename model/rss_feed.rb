@@ -124,7 +124,7 @@ class RSSItem
   end
 
   def push_indents
-    (1..@indent_level).each { push('  ') } if @indent_level > 0
+    (1..@indent_level).each { push('  ') } if @indent_level.positive?
   end
 
   def push_stand_alone_tag(tag)

@@ -88,10 +88,11 @@ class Renderer
     def indexesOfCharacters(text, searchFor)
       ix = 0
       indexes = []
+
       loop do
         ix = text.index(searchFor, ix)
         break if ix.nil?
-        indexes << ix if ix == 0 || text[ix - 1, 1] != '\\' # escape char is \
+        indexes << ix if ix.zero? || text[ix - 1, 1] != '\\' # escape char is \
         ix += 1
       end
       indexes

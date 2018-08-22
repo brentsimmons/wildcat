@@ -111,16 +111,6 @@ Style/IfUnlessModifier:
     - 'renderer/renderer.rb'
     - 'wildcat_publish.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'model/rss_feed.rb'
-    - 'renderer/renderer.rb'
-
 # Offense count: 37
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
