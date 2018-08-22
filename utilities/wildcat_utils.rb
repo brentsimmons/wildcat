@@ -4,16 +4,14 @@ require 'open3'
 require_relative '../wildcat_constants'
 
 module WildcatUtils
-
   def self.write_file_if_different(path, text)
-
     # Make sure the folder exists.
     # Skip writing the file if existing file has the same text.
 
     FileUtils.mkdir_p(File.dirname(path))
 
     should_write_file = !FileTest.exist?(path) || !WildcatUtils.file_equals_string?(path, text)
-    if !should_write_file then return end
+    return unless should_write_file
 
     print_to_console("Writing #{path}")
     write_text_file(path, text)
@@ -22,14 +20,14 @@ module WildcatUtils
   def self.write_text_file(path, text)
     f = File.open(path, 'w:UTF-8')
     f.puts(text)
-    f.close()
+    f.close
   end
 
   def self.read_text_file(path)
-		file = File.open(path, 'r:UTF-8')
-		text = file.read()
-		file.close()
-		text
+    file = File.open(path, 'r:UTF-8')
+    text = file.read
+    file.close
+    text
   end
 
   def self.file_equals_string?(path, text)
@@ -39,34 +37,29 @@ module WildcatUtils
 
   def self.rsync_local(source, dest)
     FileUtils.mkdir_p(File.dirname(dest))
-    Open3.popen3("rsync", "-azu", source, dest)[1].read
+    Open3.popen3('rsync', '-azu', source, dest)[1].read
   end
 
   def self.rsync_remote(source, dest)
     print_to_console("Syncing to #{dest}")
-    Open3.popen3("rsync", "-avzu", source, dest)[1].read
+    Open3.popen3('rsync', '-avzu', source, dest)[1].read
   end
 
   def self.files_in_folder(folder)
-
     # Doesn’t look in folders that start with a . character.
 
     paths = []
 
     Find.find(folder) do |f|
-      if File.basename(f)[0] == ?.
-        Find.prune
-      end
-      if !FileTest.directory?(f)
-        paths << f
-      end
+      Find.prune if File.basename(f)[0] == '.'
+      paths << f unless FileTest.directory?(f)
     end
 
     paths
   end
 
   def self.file_is_text_source_file?(path)
-    path.end_with?(MARKDOWN_SUFFIX) || path.end_with?(HTML_SUFFIX)
+    path.end_with?(MARKDOWN_SUFFIX, HTML_SUFFIX)
   end
 
   def self.text_source_files_in_folder(folder)
@@ -75,7 +68,6 @@ module WildcatUtils
   end
 
   def self.paths(path, input_folder, output_folder, site_url, output_file_suffix)
-
     # Return destination file path *and* permalink.
 
     relative_path = path.dup
@@ -87,11 +79,10 @@ module WildcatUtils
     permalink = File.join(site_url, relative_path)
     permalink = change_source_suffix_to_output_suffix(permalink, output_file_suffix)
 
-    return destination_path, permalink, relative_path
+    [destination_path, permalink, relative_path]
   end
 
   def self.change_source_suffix_to_output_suffix(path, output_suffix)
-
     # output_suffix should start with a . or be empty.
     # Only chops off .html and .markdown suffixes.
 
@@ -106,7 +97,7 @@ module WildcatUtils
   end
 
   def self.add_suffix_if_needed(path, suffix)
-    if suffix.nil? || suffix.empty? then return path end
+    return path if suffix.nil? || suffix.empty?
     path + suffix
   end
 
