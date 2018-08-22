@@ -40,19 +40,12 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 8
 
-# # Offense count: 5
-# # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# # AllowedNames: io, id, to, by, on, in, at, ip
-# Naming/UncommunicativeMethodParamName:
-#   Exclude:
-#     - 'model/rss_feed.rb'
-#     - 'renderer/renderer.rb'
-
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: snake_case, camelCase
-Naming/VariableName:
+# Offense count: 5
+# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+# AllowedNames: io, id, to, by, on, in, at, ip
+Naming/UncommunicativeMethodParamName:
   Exclude:
+    - 'model/rss_feed.rb'
     - 'renderer/renderer.rb'
 
 # Offense count: 5
