@@ -87,7 +87,7 @@ class BlogArchive
 
     def archive_index_html
       html = ''
-      for blog_year in sorted_years
+      sorted_years.each do |blog_year|
         html += render_year_index(blog_year)
       end
       html
@@ -98,7 +98,7 @@ class BlogArchive
       sorted_months.reverse!
 
       html = "<h4>#{blog_year.year}</h4>\n<ul>\n"
-      for blog_month in sorted_months
+      sorted_months.each do |blog_month|
         html += render_month_item(blog_year, blog_month)
       end
 

@@ -54,13 +54,6 @@ Style/ClassVars:
     - 'renderer/renderer.rb'
     - 'utilities/wildcat_file.rb'
 
-# Offense count: 2
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: each, for
-Style/For:
-  Exclude:
-    - 'model/blog_archive.rb'
-
 # Offense count: 1
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
