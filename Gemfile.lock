@@ -2,12 +2,14 @@ GEM
   remote: https://rubygems.org/
   specs:
     kramdown (1.17.0)
+    stringex (2.8.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   kramdown
+  stringex
 
 BUNDLED WITH
    1.16.2
