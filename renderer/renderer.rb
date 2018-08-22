@@ -55,7 +55,7 @@ class Renderer
     end
 
     def process_snippets(text)
-      indexesOfCharacters(text, BEGIN_SNIPPET_CHARACTERS).reverse_each { |index| process_one_snippet(text, index) }
+      indexes_of_characters(text, BEGIN_SNIPPET_CHARACTERS).reverse_each { |index| process_one_snippet(text, index) }
     end
 
     def process_one_snippet(text, ix)
@@ -69,7 +69,7 @@ class Renderer
     end
 
     def process_substitutions(text)
-      indexesOfCharacters(text, BEGIN_SUBSTITUTION_CHARACTERS).reverse_each { |ix| process_one_substitution(text, ix) }
+      indexes_of_characters(text, BEGIN_SUBSTITUTION_CHARACTERS).reverse_each { |ix| process_one_substitution(text, ix) }
       text
     end
 
@@ -85,7 +85,7 @@ class Renderer
       text[ix, (ix_end + END_SUBSTITUTION_CHARACTERS_COUNT) - ix] = result
     end
 
-    def indexesOfCharacters(text, searchFor)
+    def indexes_of_characters(text, searchFor)
       ix = 0
       indexes = []
 

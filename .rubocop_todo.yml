@@ -40,12 +40,12 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 8
 
-# Offense count: 1
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: snake_case, camelCase
-Naming/MethodName:
-  Exclude:
-    - 'renderer/renderer.rb'
+# # Offense count: 1
+# # Configuration parameters: EnforcedStyle.
+# # SupportedStyles: snake_case, camelCase
+# Naming/MethodName:
+#   Exclude:
+#     - 'renderer/renderer.rb'
 
 # Offense count: 5
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
