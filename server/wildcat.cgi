@@ -86,7 +86,7 @@ class MetaWeblogCommand
     WildcatUtils.write_file_if_different(path, text)
     new_post_id = post_id_with_relative_path(relative_path)
 
-    rebuild_site
+    # rebuild_site
 
     new_post_id
   end
@@ -123,7 +123,7 @@ class MetaWeblogCommand
 
     WildcatUtils.write_file_if_different(path, s)
 
-    rebuild_site
+    # rebuild_site
 
     true
   end
