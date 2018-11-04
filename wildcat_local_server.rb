@@ -10,6 +10,6 @@
 require 'webrick'
 require_relative 'config'
 
-server=WEBrick::HTTPServer.new(:Port => 9344, :DocumentRoot => File.join(Dir::pwd, "server/"))
-trap("INT"){ server.shutdown }
+server = WEBrick::HTTPServer.new(Port: 9344, DocumentRoot: File.join(Dir.pwd, 'server/'))
+trap('INT') { server.shutdown }
 server.start

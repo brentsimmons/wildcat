@@ -1,7 +1,6 @@
 require_relative '../utilities/wildcat_file'
 
 class WebsiteSettings
-
   attr_reader :attributes # everything
   attr_reader :project_folder
   attr_reader :site_name
@@ -42,36 +41,36 @@ class WebsiteSettings
   attr_reader :feed_url
   attr_reader :feed_media_thumbnail
 
-  SITE_NAME_KEY = 'site_name'
-  SITE_URL_KEY = 'site_url'
-  OUTPUT_FILE_SUFFIX_KEY = 'output_file_suffix'
-  OUTPUT_FOLDER_KEY = 'output_folder'
-  RSYNC_REMOTE_PATH_KEY = 'rsync_remote_path'
-  FAVICON_URL_KEY = 'favicon_url'
-  ICON_URL_KEY = 'icon_url'
-  HAS_BLOG_KEY = 'has_blog'
+  SITE_NAME_KEY = 'site_name'.freeze
+  SITE_URL_KEY = 'site_url'.freeze
+  OUTPUT_FILE_SUFFIX_KEY = 'output_file_suffix'.freeze
+  OUTPUT_FOLDER_KEY = 'output_folder'.freeze
+  RSYNC_REMOTE_PATH_KEY = 'rsync_remote_path'.freeze
+  FAVICON_URL_KEY = 'favicon_url'.freeze
+  ICON_URL_KEY = 'icon_url'.freeze
+  HAS_BLOG_KEY = 'has_blog'.freeze
 
-  BLOG_NUMBER_OF_POSTS_KEY = 'blog_number_of_posts_on_home_page'
-  BLOG_HOME_PAGE_TITLE_KEY = 'blog_home_page_title'
-  BLOG_ARCHIVE_TITLE_KEY = 'blog_archive_title'
-  BLOG_RELATIVE_PATH_KEY = 'blog_relative_path'
-  BLOG_MONTH_NAMES_KEY = 'blog_month_names'
+  BLOG_NUMBER_OF_POSTS_KEY = 'blog_number_of_posts_on_home_page'.freeze
+  BLOG_HOME_PAGE_TITLE_KEY = 'blog_home_page_title'.freeze
+  BLOG_ARCHIVE_TITLE_KEY = 'blog_archive_title'.freeze
+  BLOG_RELATIVE_PATH_KEY = 'blog_relative_path'.freeze
+  BLOG_MONTH_NAMES_KEY = 'blog_month_names'.freeze
 
-  FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'
-  FEED_TITLE_KEY = 'feed_title'
-  FEED_DESCRIPTION_KEY = 'feed_description'
-  FEED_AUTHOR_NAME_KEY = 'feed_author'
-  FEED_AUTHOR_URL_KEY = 'feed_author_url'
-  FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'
-  FEED_MEDIA_THUMBNAIL_KEY = 'feed_media_thumbnail'
+  FEED_NUMBER_OF_POSTS_KEY = 'feed_number_of_posts'.freeze
+  FEED_TITLE_KEY = 'feed_title'.freeze
+  FEED_DESCRIPTION_KEY = 'feed_description'.freeze
+  FEED_AUTHOR_NAME_KEY = 'feed_author'.freeze
+  FEED_AUTHOR_URL_KEY = 'feed_author_url'.freeze
+  FEED_AUTHOR_AVATAR_KEY = 'feed_author_avatar_url'.freeze
+  FEED_MEDIA_THUMBNAIL_KEY = 'feed_media_thumbnail'.freeze
 
-  FOLDER_NAME_POSTS = 'posts'
-  FOLDER_NAME_PAGES = 'pages'
-  FOLDER_NAME_TEMPLATES = 'templates'
-  FOLDER_NAME_SNIPPETS = 'snippets'
-  FOLDER_NAME_IMAGES = 'images'
-  FOLDER_NAME_STYLES = 'styles'
-  FOLDER_NAME_DOWNLOADS = 'downloads'
+  FOLDER_NAME_POSTS = 'posts'.freeze
+  FOLDER_NAME_PAGES = 'pages'.freeze
+  FOLDER_NAME_TEMPLATES = 'templates'.freeze
+  FOLDER_NAME_SNIPPETS = 'snippets'.freeze
+  FOLDER_NAME_IMAGES = 'images'.freeze
+  FOLDER_NAME_STYLES = 'styles'.freeze
+  FOLDER_NAME_DOWNLOADS = 'downloads'.freeze
 
   def initialize(project_folder, settings_file_path)
     @project_folder = project_folder
@@ -112,7 +111,7 @@ class WebsiteSettings
     if !@blog_relative_path.nil? && !@blog_relative_path.empty?
       @blog_url = File.join(blog_url, @blog_relative_path)
     end
-    @blog_month_names = @attributes.fetch(BLOG_MONTH_NAMES_KEY, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
+    @blog_month_names = @attributes.fetch(BLOG_MONTH_NAMES_KEY, %w[January February March April May June July August September October November December])
 
     @feed_number_of_posts = @attributes.fetch(FEED_NUMBER_OF_POSTS_KEY, 20)
     @feed_title = @attributes.fetch(FEED_TITLE_KEY, @site_name)

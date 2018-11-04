@@ -3,10 +3,9 @@
 require_relative 'model/website_settings'
 require_relative 'model/website'
 
-DEFAULT_SETTINGS_FILE_NAME = 'wildcat_settings'
+DEFAULT_SETTINGS_FILE_NAME = 'wildcat_settings'.freeze
 
 class Wildcat
-
   attr_reader :website
   attr_reader :settings
 
@@ -20,19 +19,17 @@ class Wildcat
     perform_rsync_if_needed
   end
 
-  def Wildcat.settings_with_file_name(project_folder, file_name)
-    if file_name.nil? || file_name.empty?
-      file_name = DEFAULT_SETTINGS_FILE_NAME
-    end
+  def self.settings_with_file_name(project_folder, file_name)
+    file_name = DEFAULT_SETTINGS_FILE_NAME if file_name.nil? || file_name.empty?
     settings_file_path = File.join(project_folder, file_name)
     WebsiteSettings.new(project_folder, settings_file_path)
   end
 
   private
 
-  def perform_rsync_if_needed
-    rsync_path = @settings.rsync_remote_path
-    if rsync_path.nil? || rsync_path.empty? then return end
-    WildcatUtils.rsync_remote(@settings.output_folder, rsync_path)
-  end
+    def perform_rsync_if_needed
+      rsync_path = @settings.rsync_remote_path
+      return if rsync_path.nil? || rsync_path.empty?
+      WildcatUtils.rsync_remote(@settings.output_folder, rsync_path)
+    end
 end

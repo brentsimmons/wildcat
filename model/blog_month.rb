@@ -1,7 +1,6 @@
 require_relative 'post'
 
 class BlogMonth
-
   attr_reader :month
 
   def initialize(month)
@@ -15,7 +14,7 @@ class BlogMonth
 
   def to_html
     html = ''
-    @posts.each { |post| html+= post.to_html(true) }
+    @posts.each { |post| html += post.to_html(true) }
     html
   end
 end
