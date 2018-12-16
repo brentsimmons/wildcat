@@ -11,6 +11,7 @@ HTML_NO_LEADING_DOT = 'html'
 # These appear inside source files, at the top.
 
 TITLE_KEY = 'title'
+TITLE_SHOW_KEY = 'show_title'
 LINK_KEY = 'link'
 PUB_DATE_KEY = 'pubDate'
 MOD_DATE_KEY = 'modDate'

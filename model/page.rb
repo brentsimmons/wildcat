@@ -25,6 +25,7 @@ class Page
     @output_path, @permalink, _ = WildcatUtils.paths(@path, settings.pages_folder, settings.output_folder, settings.site_url, settings.output_file_suffix)
     @content_html = wildcat_file.to_html
     @title = wildcat_file.attributes[TITLE_KEY]
+    @show_title = wildcat_file.attributes[TITLE_SHOW_KEY]
     @pub_date = wildcat_file.attributes[PUB_DATE_KEY]
   end
 
@@ -44,7 +45,11 @@ class Page
   end
 
   def to_html
-    renderer = Renderer.new(@settings, 'page', context)
+  	template_name = 'page'
+  	if !@show_title.nil? && !@show_title
+  		template_name = 'page_no_title'
+  	end
+		renderer = Renderer.new(@settings, template_name, context)
     renderer.to_s
   end
 end

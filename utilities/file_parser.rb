@@ -62,6 +62,8 @@ module FileParser
 			value = value.to_i
 		end
 
+		if value == 'true' then value = true end
+		if value == 'false' then value = false end
 		if value == '(empty-string)' then value = '' end
 
 		if /Date$/.match(key) != nil then value = Time.parse(value) end
