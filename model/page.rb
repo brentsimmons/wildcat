@@ -26,6 +26,7 @@ class Page
     @content_html = wildcat_file.to_html
     @title = wildcat_file.attributes[TITLE_KEY]
     @show_title = wildcat_file.attributes[TITLE_SHOW_KEY]
+    @template_name = wildcat_file.attributes[TEMPLATE_NAME_KEY]
     @pub_date = wildcat_file.attributes[PUB_DATE_KEY]
   end
 
@@ -48,6 +49,9 @@ class Page
   	template_name = 'page'
   	if !@show_title.nil? && !@show_title
   		template_name = 'page_no_title'
+  	end
+  	if !@template_name.nil?
+  		template_name = @template_name
   	end
 		renderer = Renderer.new(@settings, template_name, context)
     renderer.to_s

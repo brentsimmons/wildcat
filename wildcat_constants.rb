@@ -12,6 +12,7 @@ HTML_NO_LEADING_DOT = 'html'
 
 TITLE_KEY = 'title'
 TITLE_SHOW_KEY = 'show_title'
+TEMPLATE_NAME_KEY = 'template'
 LINK_KEY = 'link'
 PUB_DATE_KEY = 'pubDate'
 MOD_DATE_KEY = 'modDate'
