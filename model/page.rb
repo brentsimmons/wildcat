@@ -25,6 +25,7 @@ class Page
     @output_path, @permalink, _ = WildcatUtils.paths(@path, settings.pages_folder, settings.output_folder, settings.site_url, settings.output_file_suffix)
     @content_html = wildcat_file.to_html
     @title = wildcat_file.attributes[TITLE_KEY]
+    @description = wildcat_file.attributes[DESCRIPTION_KEY]
     @show_title = wildcat_file.attributes[TITLE_SHOW_KEY]
     @template_name = wildcat_file.attributes[TEMPLATE_NAME_KEY]
     @pub_date = wildcat_file.attributes[PUB_DATE_KEY]
@@ -36,6 +37,7 @@ class Page
 
     context[CONTEXT_PERMALINK_KEY] = @permalink
     context[CONTEXT_TITLE_KEY] = @title
+    context[CONTEXT_DESCRIPTION_KEY] = @description
     context[CONTEXT_CONTENT_HTML_KEY] = @content_html
 
     if !@pub_date.nil?
