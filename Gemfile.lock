@@ -1,7 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    kramdown (1.17.0)
+    kramdown (2.3.0)
+      rexml
+    rexml (3.2.4)
     stringex (2.8.4)
 
 PLATFORMS
