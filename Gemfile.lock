@@ -3,7 +3,7 @@ GEM
   specs:
     kramdown (2.3.1)
       rexml
-    rexml (3.2.4)
+    rexml (3.2.5)
     stringex (2.8.4)
 
 PLATFORMS
