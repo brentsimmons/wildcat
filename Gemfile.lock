@@ -10,8 +10,10 @@ GEM
   specs:
     kramdown (2.4.0)
       rexml
-    rexml (3.2.5)
+    rexml (3.3.3)
+      strscan
     stringex (2.8.5)
+    strscan (3.1.0)
 
 PLATFORMS
   x86_64-linux
