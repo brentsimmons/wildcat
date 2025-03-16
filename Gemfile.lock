@@ -1,15 +1,25 @@
+PATH
+  remote: .
+  specs:
+    wildcat (0.0.1)
+      kramdown
+      stringex
+
 GEM
   remote: https://rubygems.org/
   specs:
-    kramdown (1.17.0)
-    stringex (2.8.4)
+    kramdown (2.4.0)
+      rexml
+    rexml (3.3.6)
+      strscan
+    stringex (2.8.5)
+    strscan (3.1.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
-  kramdown
-  stringex
+  wildcat!
 
 BUNDLED WITH
-   1.16.2
+   2.3.18
