@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby -wU
 
+# Suppress Rouge gem warnings
+$VERBOSE = nil
+
 require_relative 'wildcat'
 
 # Command-line
