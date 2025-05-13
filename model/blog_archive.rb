@@ -102,7 +102,7 @@ class BlogArchive
   def render_post_item(post)
     title = post.display_title
     url = post.permalink
-    date = post.pub_date.strftime("%d %b")
+    date = post.pub_date.strftime("%d&nbsp;%b")
     "<li><a href=\"#{url}\">#{title}</a> <span class=\"date\">#{date}</span></li>\n"
   end
 end
