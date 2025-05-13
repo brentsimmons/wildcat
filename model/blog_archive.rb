@@ -14,8 +14,7 @@ class BlogArchive
 
   def build
     build_single_post_pages
-    build_month_pages
-    build_index_page
+    build_archive_page
   end
 
   private
@@ -50,31 +49,10 @@ class BlogArchive
     PageBuilder.build(@settings, 'archive_single_post', context, post.destination_path)
   end
 
-  def build_month_pages
-    @years.values.each { |blog_year| build_month_pages_for_year(blog_year) }
-  end
-
-  def build_month_pages_for_year(blog_year)
-    blog_year.months.values.each { |blog_month| build_month_page(blog_year, blog_month) }
-  end
-
-  def build_month_page(blog_year, blog_month)
-    context = {}
-    month_name = @settings.blog_month_names[blog_month.month - 1]
-    context[CONTEXT_TITLE_KEY] = "#{month_name} #{blog_year.year}"
-    context[CONTEXT_CONTENT_HTML_KEY] = blog_month.to_html
-
-    relative_path = month_page_relative_path(blog_year, blog_month)
-    destination_path = File.join(@settings.blog_output_folder, relative_path)
-    destination_path = File.join(destination_path, 'index')
-    destination_path = WildcatUtils.add_suffix_if_needed(destination_path, @settings.output_file_suffix)
-    PageBuilder.build(@settings, 'archive_month', context, destination_path)
-  end
-
-  def build_index_page
+  def build_archive_page
     context = {}
     context[CONTEXT_TITLE_KEY] = @settings.blog_archive_title
-    context[CONTEXT_CONTENT_HTML_KEY] = archive_index_html
+    context[CONTEXT_CONTENT_HTML_KEY] = archive_page_html
 
     destination_path = File.join(@settings.blog_output_folder, 'archive')
     destination_path = WildcatUtils.add_suffix_if_needed(destination_path, @settings.output_file_suffix)
@@ -86,39 +64,45 @@ class BlogArchive
     years.reverse
   end
 
-  def archive_index_html
+  def archive_page_html
     html = ''
     for blog_year in sorted_years
-      html = html + render_year_index(blog_year)
+      html = html + render_year_section(blog_year)
     end
     html
   end
 
-  def render_year_index(blog_year)
+  def render_year_section(blog_year)
     sorted_months = blog_year.months.values.sort_by { |blog_month| blog_month.month }
     sorted_months.reverse!
 
-    html = "<h4>#{blog_year.year}</h4>\n<ul>\n"
+    html = ''
     for blog_month in sorted_months
-      html = html + render_month_item(blog_year, blog_month)
+      html = html + render_month_section(blog_year, blog_month)
     end
+    html
+  end
 
+  def render_month_section(blog_year, blog_month)
+    month_name = @settings.blog_month_names[blog_month.month - 1]
+    html = "<h2>#{month_name} #{blog_year.year}</h2>\n<ul>\n"
+    
+    # Sort posts by date within the month
+    sorted_posts = blog_month.posts.sort_by { |post| post.pub_date }
+    sorted_posts.reverse!
+    
+    sorted_posts.each do |post|
+      html = html + render_post_item(post)
+    end
+    
     html = html + "</ul>\n"
     html
   end
 
-  def render_month_item(blog_year, blog_month)
-    month_name = @settings.blog_month_names[blog_month.month - 1]
-    url = month_item_link(blog_year, blog_month)
-    "<li><a href=#{url}>#{month_name}</a></li>\n"
-  end
-
-  def month_item_link(blog_year, blog_month)
-    month_page_relative_path(blog_year, blog_month)
-  end
-
-  def month_page_relative_path(blog_year, blog_month)
-    month_string = blog_month.month.to_s.rjust(2, '0')
-    "#{blog_year.year}/#{month_string}/"
+  def render_post_item(post)
+    title = post.display_title
+    url = post.permalink
+    date = post.pub_date.strftime("%d %b")
+    "<li><a href=\"#{url}\">#{title}</a> <span class=\"date\">#{date}</span></li>\n"
   end
 end

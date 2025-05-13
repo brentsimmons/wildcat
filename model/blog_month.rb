@@ -3,6 +3,7 @@ require_relative 'post'
 class BlogMonth
 
   attr_reader :month
+  attr_reader :posts
 
   def initialize(month)
     @month = month
