@@ -55,6 +55,24 @@ class Post
 
   end
 
+  def display_title
+    return @title unless @title.nil? || @title.empty?
+    
+    # Extract text from first paragraph
+    text = @content_html.gsub(/<[^>]*>/, '')  # Remove HTML tags
+    text = text.strip
+    words = text.split(/\s+/)
+    
+    # Take first 10 words or less
+    title_words = words[0..9]
+    title = title_words.join(' ')
+    
+    # Add ellipsis if truncated
+    title += '…' if words.length > 10
+    
+    title
+  end
+
   def to_json_feed_component
 
     json = {}
